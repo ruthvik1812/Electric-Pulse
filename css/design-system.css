@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;600&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Jewel-tone base — no more black! */
+  --bg:           #0a0520;
+  --bg2:          #0d0a28;
+  --cyan:         #00F2FF;
+  --cyan-dim:     rgba(0,242,255,0.2);
+  --cyan-glow:    rgba(0,242,255,0.5);
+  --green:        #BCFF00;
+  --green-dim:    rgba(188,255,0,0.2);
+  --green-glow:   rgba(188,255,0,0.55);
+  --magenta:      #FF2D78;
+  --magenta-dim:  rgba(255,45,120,0.2);
+  --white:        #F0F8FF;
+  --grey:         #3A3560;
+  --glass-bg:     rgba(255,255,255,0.06);
+  --glass-border: rgba(255,255,255,0.15);
+  --font-display: 'Orbitron', monospace;
+  --font-mono:    'JetBrains Mono', monospace;
+  --section-h:    100vh;
+}
+
+html { scroll-behavior: smooth; scroll-snap-type: y mandatory; overflow-x: hidden; }
+
+body {
+  background: linear-gradient(135deg, #0a0520 0%, #0d0a28 40%, #0f1535 70%, #12082a 100%);
+  color: var(--white);
+  font-family: var(--font-mono);
+  cursor: none;
+  overflow-x: hidden;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #0a0520; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg,#00F2FF,#A855F7,#EC4899); border-radius: 2px; box-shadow: 0 0 6px var(--cyan); }
+
+/* ── Typography ── */
+.display { font-family: var(--font-display); letter-spacing: 0.08em; }
+.mono    { font-family: var(--font-mono); }
+
+/* ── Glassmorphism card ── */
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border-radius: 12px;
+}
+
+/* ── Neon text ── */
+.neon-cyan  { color: var(--cyan);  text-shadow: 0 0 8px var(--cyan),  0 0 20px var(--cyan-glow); }
+.neon-green { color: var(--green); text-shadow: 0 0 8px var(--green), 0 0 20px var(--green-glow); }
+.neon-red   { color: var(--magenta); text-shadow: 0 0 8px var(--magenta); }
+
+/* ── Grid overlay (circuit pattern) ── */
+.circuit-bg {
+  position: relative;
+  background-image:
+    linear-gradient(rgba(0,242,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,242,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.circuit-bg::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(5,2,20,0.4) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Scanlines (activated by diagnostics) ── */
+.scanlines::after {
+  content: '';
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0,0,0,0.25) 0px,
+    rgba(0,0,0,0.25) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
+  z-index: 9999;
+  animation: scanMove 3s linear infinite;
+}
+@keyframes scanMove { from { background-position: 0 0; } to { background-position: 0 60px; } }
+
+/* ── Corner brackets ── */
+.bracket {
+  position: absolute;
+  width: 20px; height: 20px;
+  border-color: var(--cyan);
+  border-style: solid;
+  opacity: 0.7;
+}
+.bracket-tl { top:8px; left:8px;  border-width: 2px 0 0 2px; }
+.bracket-tr { top:8px; right:8px; border-width: 2px 2px 0 0; }
+.bracket-bl { bottom:8px; left:8px;  border-width: 0 0 2px 2px; }
+.bracket-br { bottom:8px; right:8px; border-width: 0 2px 2px 0; }
+
+/* ── Pulse ring animation ── */
+@keyframes pulseRing {
+  0%   { transform: scale(1);   opacity: 0.8; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+@keyframes fadeSlideUp {
+  from { opacity:0; transform: translateY(30px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+@keyframes floatY {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-8px); }
+}
+@keyframes rotateRing {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.float { animation: floatY 4s ease-in-out infinite; }
+
+/* ── Orb utility classes (replaces repeated inline styles) ── */
+.orb-cyan    { background: rgba(0,242,255,0.08); }
+.orb-purple  { background: rgba(168,85,247,0.08); }
+.orb-magenta { background: rgba(236,72,153,0.07); }
+.orb-orange  { background: rgba(249,115,22,0.10); }
+.orb-green   { background: rgba(188,255,0,0.08); }
+.orb-gold    { background: rgba(252,211,77,0.07); }
+.orb-teal    { background: rgba(34,211,238,0.08); }
+
+/* ── Mobile sidebar hide ── */
+@media (max-width: 768px) {
+  #voltage-sidebar { display: none !important; }
+  #section-dots    { display: none !important; }
+}

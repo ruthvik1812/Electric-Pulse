@@ -1,0 +1,94 @@
+/* ═══════════════════════════════════════
+   BENTO TOOLTIP SYSTEM
+═══════════════════════════════════════ */
+.bento-tooltip {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  width: 260px;
+  background: rgba(10,12,18,0.92);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border-radius: 14px;
+  padding: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  z-index: 999;
+  box-shadow: 0 0 20px rgba(0,242,255,0.1), 0 20px 40px rgba(0,0,0,0.7);
+}
+
+.interactive:hover .bento-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Bento grid inside tooltip */
+.bento-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.bento-grid.full { grid-template-columns: 1fr; }
+
+.bento-cell {
+  background: rgba(0,242,255,0.05);
+  border: 1px solid rgba(0,242,255,0.1);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+.bento-cell.span-2 { grid-column: span 2; }
+.bento-cell.green-cell {
+  background: rgba(188,255,0,0.05);
+  border-color: rgba(188,255,0,0.15);
+}
+.bento-cell.red-cell {
+  background: rgba(255,45,120,0.05);
+  border-color: rgba(255,45,120,0.15);
+}
+
+.bento-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: rgba(0,242,255,0.5);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+.bento-value {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--white);
+  font-weight: 600;
+}
+.bento-value.cyan  { color: var(--cyan); }
+.bento-value.green { color: var(--green); }
+.bento-value.red   { color: var(--magenta); }
+
+.bento-title {
+  font-family: var(--font-display);
+  font-size: 11px;
+  color: var(--cyan);
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(0,242,255,0.12);
+}
+
+/* Arrow */
+.bento-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px; height: 12px;
+  background: rgba(10,12,18,0.92);
+  border-right: 1px solid var(--glass-border);
+  border-bottom: 1px solid var(--glass-border);
+  transform: translateX(-50%) rotate(45deg);
+  border-top: none;
+  border-left: none;
+}

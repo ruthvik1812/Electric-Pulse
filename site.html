@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Electric Pulse — Next-Gen Technology</title>
+  <meta name="description" content="Electric Pulse — the next generation of high-performance computing technology. Explore innovation at the speed of light." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="site.css" />
+</head>
+<body>
+
+<!-- ── ANNOUNCEMENT BANNER ── -->
+<div id="announce-bar">
+  <div class="announce-inner">
+    <span class="announce-dot"></span>
+    <span>🎉 Electric Pulse v3.0 is live — <a href="#features">See what's new →</a></span>
+    <button class="announce-close" id="announceClose" aria-label="Close">✕</button>
+  </div>
+</div>
+
+<!-- ── CANVAS BACKGROUND ── -->
+<canvas id="bg-canvas"></canvas>
+<!-- ── PARTICLE CANVAS ── -->
+<canvas id="particle-canvas"></canvas>
+
+<!-- ── NAVIGATION ── -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a class="nav-brand" href="#">
+      <span class="brand-icon">⚡</span>
+      <span class="brand-text">Electric<span class="brand-accent">Pulse</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#specs">Specs</a></li>
+      <li><a href="#showcase">Showcase</a></li>
+      <li><a href="#testimonials">Reviews</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="#" class="btn btn-ghost">Sign In</a>
+      <a href="#cta" class="btn btn-primary">Get Started</a>
+    </div>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-badge" data-reveal>
+      <span class="badge-dot"></span>
+      <span>Now available — Version 3.0</span>
+    </div>
+    <h1 class="hero-title" data-reveal>
+      Technology at the<br/>
+      <span class="gradient-text typewriter" id="typewriter"></span>
+    </h1>
+    <p class="hero-sub" data-reveal>
+      Electric Pulse redefines what's possible in modern computing. 
+      Blazing performance, stunning visuals, and intelligent design — 
+      all in one unified platform.
+    </p>
+    <div class="hero-cta" data-reveal>
+      <a href="#features" class="btn btn-primary btn-lg btn-sparkle" data-magnetic>
+        <span class="btn-inner">Explore Features</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#showcase" class="btn btn-outline btn-lg" data-magnetic>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a6 6 0 100 12A6 6 0 008 2zM6.5 6L10 8l-3.5 2V6z" fill="currentColor"/></svg>
+        <span>Watch Demo</span>
+      </a>
+    </div>
+    <div class="hero-stats" data-reveal>
+      <div class="stat-item">
+        <span class="stat-num" data-count="99">0</span><span class="stat-unit">%</span>
+        <span class="stat-label">Uptime SLA</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-num" data-count="10">0</span><span class="stat-unit">x</span>
+        <span class="stat-label">Faster Processing</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-num" data-count="50">0</span><span class="stat-unit">k+</span>
+        <span class="stat-label">Active Users</span>
+      </div>
+    </div>
+  </div>
+  <!-- Floating UI mockup -->
+  <div class="hero-visual" data-reveal>
+    <div class="mockup-card card-glow">
+      <div class="mockup-header">
+        <div class="mockup-dots">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </div>
+        <span class="mockup-title">System Dashboard</span>
+      </div>
+      <div class="mockup-body">
+        <div class="mockup-row">
+          <span class="row-label">CPU Load</span>
+          <div class="progress-bar"><div class="progress-fill cpu-fill" style="--w:72%"></div></div>
+          <span class="row-val cyan">72%</span>
+        </div>
+        <div class="mockup-row">
+          <span class="row-label">Memory</span>
+          <div class="progress-bar"><div class="progress-fill" style="--w:45%;--c:#A78BFA"></div></div>
+          <span class="row-val purple">45%</span>
+        </div>
+        <div class="mockup-row">
+          <span class="row-label">Network</span>
+          <div class="progress-bar"><div class="progress-fill" style="--w:88%;--c:#34D399"></div></div>
+          <span class="row-val green">88%</span>
+        </div>
+        <div class="mockup-chart">
+          <svg viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="cg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#00F2FF" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#00F2FF" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <path d="M0 50 C30 40 40 10 60 20 S90 50 110 30 S140 5 160 15 S185 30 200 20 L200 60 L0 60Z" fill="url(#cg)"/>
+            <path d="M0 50 C30 40 40 10 60 20 S90 50 110 30 S140 5 160 15 S185 30 200 20" stroke="#00F2FF" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="mockup-metrics">
+          <div class="metric"><span class="metric-val" style="color:#00F2FF">1.2ms</span><span class="metric-label">Latency</span></div>
+          <div class="metric"><span class="metric-val" style="color:#A78BFA">99.9%</span><span class="metric-label">Uptime</span></div>
+          <div class="metric"><span class="metric-val" style="color:#34D399">4.2TB</span><span class="metric-label">Storage</span></div>
+        </div>
+      </div>
+    </div>
+    <!-- Floating accent cards -->
+    <div class="float-card fc1">
+      <span class="fc-icon">🚀</span>
+      <div>
+        <div class="fc-title">Performance</div>
+        <div class="fc-val">+340% faster</div>
+      </div>
+    </div>
+    <div class="float-card fc2">
+      <span class="fc-icon">🔒</span>
+      <div>
+        <div class="fc-title">Security</div>
+        <div class="fc-val">AES-256 encrypted</div>
+      </div>
+    </div>
+    <div class="float-card fc3">
+      <span class="fc-icon">⚡</span>
+      <div>
+        <div class="fc-title">Live Updates</div>
+        <div class="fc-val">Real-time sync</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── NEON MARQUEE ── -->
+<div id="neon-marquee">
+  <div class="marquee-track">
+    <span>⚡ Sub-1ms Latency</span>
+    <span class="sep">◆</span>
+    <span>🛡 Zero Trust Security</span>
+    <span class="sep">◆</span>
+    <span>🌐 450+ Edge Nodes</span>
+    <span class="sep">◆</span>
+    <span>🤖 AI-Powered Analytics</span>
+    <span class="sep">◆</span>
+    <span>📈 Auto-scaling Infrastructure</span>
+    <span class="sep">◆</span>
+    <span>🔒 AES-256 Encryption</span>
+    <span class="sep">◆</span>
+    <span>☁️ 99.99% Uptime SLA</span>
+    <span class="sep">◆</span>
+    <span>⚡ Sub-1ms Latency</span>
+    <span class="sep">◆</span>
+    <span>🛡 Zero Trust Security</span>
+    <span class="sep">◆</span>
+    <span>🌐 450+ Edge Nodes</span>
+    <span class="sep">◆</span>
+    <span>🤖 AI-Powered Analytics</span>
+    <span class="sep">◆</span>
+    <span>📈 Auto-scaling Infrastructure</span>
+    <span class="sep">◆</span>
+    <span>🔒 AES-256 Encryption</span>
+    <span class="sep">◆</span>
+    <span>☁️ 99.99% Uptime SLA</span>
+    <span class="sep">◆</span>
+  </div>
+</div>
+
+<!-- ── LOGOS / TRUST BAR ── -->
+<section id="trust">
+  <div class="trust-inner">
+    <p class="trust-label">Trusted by industry leaders</p>
+    <div class="logo-track">
+      <div class="logo-strip">
+        <div class="logo-item">NVIDIA</div>
+        <div class="logo-item">Intel</div>
+        <div class="logo-item">AWS</div>
+        <div class="logo-item">Google</div>
+        <div class="logo-item">Meta</div>
+        <div class="logo-item">Apple</div>
+        <div class="logo-item">Samsung</div>
+        <div class="logo-item">Oracle</div>
+        <!-- duplicate for seamless loop -->
+        <div class="logo-item">NVIDIA</div>
+        <div class="logo-item">Intel</div>
+        <div class="logo-item">AWS</div>
+        <div class="logo-item">Google</div>
+        <div class="logo-item">Meta</div>
+        <div class="logo-item">Apple</div>
+        <div class="logo-item">Samsung</div>
+        <div class="logo-item">Oracle</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURES ── -->
+<section id="features">
+  <div class="section-inner">
+    <div class="section-tag" data-reveal>Features</div>
+    <h2 class="section-title" data-reveal>Everything you need,<br/><span class="gradient-text">nothing you don't</span></h2>
+    <p class="section-sub" data-reveal>Built from the ground up for the next generation of applications. Fast, secure, and endlessly scalable.</p>
+
+    <div class="features-grid">
+      <div class="feature-card card-glow" data-reveal style="--delay:0ms">
+        <div class="feat-icon" style="--ic:#00F2FF;--ib:rgba(0,242,255,0.12)">⚡</div>
+        <h3>Lightning Fast</h3>
+        <p>Sub-millisecond response times with our optimized processing pipeline and edge compute network spanning 40+ regions.</p>
+        <div class="feat-stat">1.2ms avg latency</div>
+      </div>
+      <div class="feature-card card-glow" data-reveal style="--delay:100ms">
+        <div class="feat-icon" style="--ic:#A78BFA;--ib:rgba(167,139,250,0.12)">🛡️</div>
+        <h3>Bank-Grade Security</h3>
+        <p>End-to-end AES-256 encryption, zero-knowledge architecture, and real-time threat detection powered by ML.</p>
+        <div class="feat-stat">SOC 2 Type II compliant</div>
+      </div>
+      <div class="feature-card card-glow" data-reveal style="--delay:200ms">
+        <div class="feat-icon" style="--ic:#34D399;--ib:rgba(52,211,153,0.12)">📈</div>
+        <h3>Infinite Scale</h3>
+        <p>Auto-scaling infrastructure that grows with your demand. From zero to millions of requests without configuration.</p>
+        <div class="feat-stat">Auto-scales to 10M rpm</div>
+      </div>
+      <div class="feature-card card-glow" data-reveal style="--delay:300ms">
+        <div class="feat-icon" style="--ic:#F472B6;--ib:rgba(244,114,182,0.12)">🎨</div>
+        <h3>Developer First</h3>
+        <p>Beautiful SDKs, rich documentation, one-line integrations, and a developer experience that sparks joy.</p>
+        <div class="feat-stat">50+ native integrations</div>
+      </div>
+      <div class="feature-card card-glow" data-reveal style="--delay:400ms">
+        <div class="feat-icon" style="--ic:#FBBF24;--ib:rgba(251,191,36,0.12)">🤖</div>
+        <h3>AI-Powered Insights</h3>
+        <p>Intelligent anomaly detection, predictive analytics, and automated recommendations that keep you ahead.</p>
+        <div class="feat-stat">GPT-4 powered analytics</div>
+      </div>
+      <div class="feature-card card-glow" data-reveal style="--delay:500ms">
+        <div class="feat-icon" style="--ic:#F97316;--ib:rgba(249,115,22,0.12)">🌐</div>
+        <h3>Global CDN</h3>
+        <p>450+ edge nodes worldwide ensuring your content reaches anyone, anywhere, in under 20 milliseconds.</p>
+        <div class="feat-stat">450+ edge locations</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS — BENTO GRID ── -->
+<section id="howitworks">
+  <div class="section-inner">
+    <div class="section-tag" data-reveal>How It Works</div>
+    <h2 class="section-title" data-reveal>Three steps to <span class="gradient-text">the future</span></h2>
+    <div class="bento-grid">
+      <div class="bento-card bento-large card-glow" data-reveal style="--delay:0ms">
+        <div class="bento-num">01</div>
+        <h3>Connect in seconds</h3>
+        <p>Drop in our SDK with one npm install. Auto-configure detects your stack, zero-boilerplate setup gets you to production instantly.</p>
+        <div class="bento-code">
+          <span class="code-comment"># Install ElectricPulse SDK</span><br/>
+          <span class="code-cmd">npm install</span> <span class="code-pkg">@electricpulse/sdk</span><br/><br/>
+          <span class="code-comment"># Initialize in 3 lines</span><br/>
+          <span class="code-kw">import</span> EP <span class="code-kw">from</span> <span class="code-str">'@electricpulse/sdk'</span><br/>
+          <span class="code-fn">EP</span>.init({ key: <span class="code-str">'your-key'</span> })
+        </div>
+      </div>
+      <div class="bento-card bento-top-right card-glow" data-reveal style="--delay:100ms">
+        <div class="bento-num">02</div>
+        <h3>Instant Insights</h3>
+        <p>Your dashboard populates with live data the moment traffic flows. No config, no waiting.</p>
+        <div class="bento-icon-row">
+          <span class="bento-icon" style="--c:#00F2FF">📊</span>
+          <span class="bento-icon" style="--c:#A78BFA">📡</span>
+          <span class="bento-icon" style="--c:#34D399">🔔</span>
+        </div>
+      </div>
+      <div class="bento-card bento-bottom-left card-glow" data-reveal style="--delay:200ms">
+        <div class="bento-num">03</div>
+        <h3>Scale Without Limits</h3>
+        <p>From 1 to 1 billion requests. Automatic sharding, load balancing, and geo-routing — handled for you.</p>
+        <div class="bento-meter">
+          <div class="bento-meter-label">Current load</div>
+          <div class="bento-meter-bar"><div class="bento-meter-fill"></div></div>
+          <div class="bento-meter-val">84%</div>
+        </div>
+      </div>
+      <div class="bento-card bento-bottom-right card-glow" data-reveal style="--delay:300ms">
+        <div class="bento-orbs">
+          <div class="bo" style="--bc:#00F2FF;--bs:120px"></div>
+          <div class="bo" style="--bc:#A78BFA;--bs:90px;--bd:2s"></div>
+        </div>
+        <div class="bento-num">✓</div>
+        <h3>Always On</h3>
+        <p>Multi-region failover keeps you live even when the unexpected happens.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SPECS / NUMBERS ── -->
+<section id="specs">
+  <div class="section-inner">
+    <div class="specs-layout">
+      <div class="specs-text">
+        <div class="section-tag" data-reveal>By the Numbers</div>
+        <h2 class="section-title" data-reveal>Built for<br/><span class="gradient-text">extreme performance</span></h2>
+        <p class="section-sub" data-reveal>Our infrastructure is engineered for workloads that demand the absolute best. Every metric, obsessively optimized.</p>
+        <a href="#cta" class="btn btn-primary" data-reveal style="--delay:200ms">View full specs →</a>
+      </div>
+      <div class="specs-cards">
+        <div class="spec-card" data-reveal style="--delay:0ms">
+          <div class="spec-num" style="--c:#00F2FF" data-count="99.99">0</div>
+          <div class="spec-unit">%</div>
+          <div class="spec-label">Availability SLA</div>
+          <div class="spec-bar"><div class="spec-bar-fill" style="--w:99.99%;--c:#00F2FF"></div></div>
+        </div>
+        <div class="spec-card" data-reveal style="--delay:100ms">
+          <div class="spec-num" style="--c:#A78BFA" data-count="256">0</div>
+          <div class="spec-unit">-bit</div>
+          <div class="spec-label">Encryption standard</div>
+          <div class="spec-bar"><div class="spec-bar-fill" style="--w:100%;--c:#A78BFA"></div></div>
+        </div>
+        <div class="spec-card" data-reveal style="--delay:200ms">
+          <div class="spec-num" style="--c:#34D399" data-count="450">0</div>
+          <div class="spec-unit">+</div>
+          <div class="spec-label">Edge locations</div>
+          <div class="spec-bar"><div class="spec-bar-fill" style="--w:90%;--c:#34D399"></div></div>
+        </div>
+        <div class="spec-card" data-reveal style="--delay:300ms">
+          <div class="spec-num" style="--c:#F472B6" data-count="10">0</div>
+          <div class="spec-unit">M+</div>
+          <div class="spec-label">API calls / day</div>
+          <div class="spec-bar"><div class="spec-bar-fill" style="--w:80%;--c:#F472B6"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SHOWCASE ── -->
+<section id="showcase">
+  <div class="section-inner">
+    <div class="section-tag" data-reveal>Showcase</div>
+    <h2 class="section-title" data-reveal>See it in <span class="gradient-text">action</span></h2>
+    <div class="showcase-tabs" data-reveal>
+      <button class="tab active" data-tab="dashboard">Dashboard</button>
+      <button class="tab" data-tab="analytics">Analytics</button>
+      <button class="tab" data-tab="security">Security</button>
+    </div>
+    <div class="showcase-panel" data-reveal>
+      <div class="panel-content active" id="tab-dashboard">
+        <div class="panel-ui">
+          <div class="ui-sidebar">
+            <div class="ui-logo">⚡ EP</div>
+            <nav class="ui-nav">
+              <div class="ui-nav-item active">🏠 Dashboard</div>
+              <div class="ui-nav-item">📊 Analytics</div>
+              <div class="ui-nav-item">🔒 Security</div>
+              <div class="ui-nav-item">⚙️ Settings</div>
+            </nav>
+          </div>
+          <div class="ui-main">
+            <div class="ui-topbar">
+              <span class="ui-greeting">Good morning, User 👋</span>
+              <div class="ui-topbar-actions">
+                <div class="ui-avatar"></div>
+              </div>
+            </div>
+            <div class="ui-metrics">
+              <div class="ui-metric" style="--accent:#00F2FF">
+                <div class="um-label">Total Requests</div>
+                <div class="um-val">2.4M</div>
+                <div class="um-change up">↑ 12.5%</div>
+              </div>
+              <div class="ui-metric" style="--accent:#A78BFA">
+                <div class="um-label">Avg Latency</div>
+                <div class="um-val">1.2ms</div>
+                <div class="um-change up">↓ 8.3%</div>
+              </div>
+              <div class="ui-metric" style="--accent:#34D399">
+                <div class="um-label">Uptime</div>
+                <div class="um-val">99.99%</div>
+                <div class="um-change up">↑ 0.01%</div>
+              </div>
+              <div class="ui-metric" style="--accent:#F472B6">
+                <div class="um-label">Active Users</div>
+                <div class="um-val">48.2K</div>
+                <div class="um-change up">↑ 21.4%</div>
+              </div>
+            </div>
+            <div class="ui-chart-area">
+              <div class="ui-chart-label">Traffic Overview — Last 7 days</div>
+              <svg class="ui-chart" viewBox="0 0 400 80" fill="none">
+                <defs>
+                  <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#00F2FF" stop-opacity="0.3"/>
+                    <stop offset="100%" stop-color="#00F2FF" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <path d="M0 60 L55 50 L110 30 L165 45 L220 20 L275 35 L330 10 L400 25 L400 80 L0 80Z" fill="url(#g1)"/>
+                <path d="M0 60 L55 50 L110 30 L165 45 L220 20 L275 35 L330 10 L400 25" stroke="#00F2FF" stroke-width="2" stroke-linejoin="round"/>
+                <circle cx="330" cy="10" r="4" fill="#00F2FF"/>
+                <circle cx="220" cy="20" r="3" fill="#00F2FF" fill-opacity="0.5"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-content" id="tab-analytics">
+        <div class="panel-placeholder">
+          <div class="placeholder-icon">📊</div>
+          <div class="placeholder-text">Rich Analytics Dashboard</div>
+          <div class="placeholder-sub">Real-time charts, custom reports, export to PDF/CSV</div>
+        </div>
+      </div>
+      <div class="panel-content" id="tab-security">
+        <div class="panel-placeholder">
+          <div class="placeholder-icon">🔒</div>
+          <div class="placeholder-text">Security Control Center</div>
+          <div class="placeholder-sub">Threat detection, access logs, compliance reports</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section id="testimonials">
+  <div class="section-inner">
+    <div class="section-tag" data-reveal>Testimonials</div>
+    <h2 class="section-title" data-reveal>Loved by <span class="gradient-text">thousands</span></h2>
+    <div class="testimonials-grid">
+      <div class="testi-card card-glow" data-reveal style="--delay:0ms">
+        <div class="testi-stars">★★★★★</div>
+        <p>"Electric Pulse completely transformed our infrastructure. We went from 300ms average latency to under 2ms. Absolutely game-changing."</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="--c:#00F2FF">SK</div>
+          <div>
+            <div class="testi-name">Sarah Kim</div>
+            <div class="testi-role">CTO, NovaTech</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card card-glow featured" data-reveal style="--delay:150ms">
+        <div class="testi-stars">★★★★★</div>
+        <p>"The developer experience is second to none. Their API design is a masterclass in clarity and power. I migrated our entire stack in a weekend."</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="--c:#A78BFA">MR</div>
+          <div>
+            <div class="testi-name">Marcus Rivera</div>
+            <div class="testi-role">Lead Engineer, DataFlow</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card card-glow" data-reveal style="--delay:300ms">
+        <div class="testi-stars">★★★★★</div>
+        <p>"Security compliance was our biggest challenge. Electric Pulse handled everything — SOC 2, GDPR, HIPAA — out of the box. Incredible."</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="--c:#34D399">AP</div>
+          <div>
+            <div class="testi-name">Anya Patel</div>
+            <div class="testi-role">Head of Engineering, HealthSync</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WAVE DIVIDER ── -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 80" fill="none" preserveAspectRatio="none">
+    <path d="M0 40 C240 80 480 0 720 40 S1200 80 1440 40 L1440 80 L0 80Z" fill="rgba(0,242,255,0.04)"/>
+    <path d="M0 40 C240 80 480 0 720 40 S1200 80 1440 40" stroke="rgba(0,242,255,0.12)" stroke-width="1"/>
+  </svg>
+</div>
+<!-- ── PRICING / CTA ── -->
+<section id="cta">
+  <div class="section-inner">
+    <div class="cta-box card-glow" data-reveal>
+      <div class="cta-badge">🚀 Limited time — 30% off all plans</div>
+      <h2 class="cta-title">Ready to build the <span class="gradient-text">future?</span></h2>
+      <p class="cta-sub">Join 50,000+ developers and companies already building with Electric Pulse. Start free, scale forever.</p>
+      <div class="cta-plans">
+        <div class="plan-card">
+          <div class="plan-name">Starter</div>
+          <div class="plan-price"><span>$0</span><span class="plan-period">/mo</span></div>
+          <ul class="plan-features">
+            <li>✓ 1M API requests</li>
+            <li>✓ 3 team members</li>
+            <li>✓ Community support</li>
+          </ul>
+          <a href="#" class="btn btn-outline w-full">Get started free</a>
+        </div>
+        <div class="plan-card featured">
+          <div class="plan-popular">Most Popular</div>
+          <div class="plan-name">Pro</div>
+          <div class="plan-price"><span>$49</span><span class="plan-period">/mo</span></div>
+          <ul class="plan-features">
+            <li>✓ 100M API requests</li>
+            <li>✓ 25 team members</li>
+            <li>✓ Priority support 24/7</li>
+            <li>✓ Advanced analytics</li>
+          </ul>
+          <a href="#" class="btn btn-primary w-full">Start free trial</a>
+        </div>
+        <div class="plan-card">
+          <div class="plan-name">Enterprise</div>
+          <div class="plan-price"><span>Custom</span></div>
+          <ul class="plan-features">
+            <li>✓ Unlimited requests</li>
+            <li>✓ Unlimited members</li>
+            <li>✓ Dedicated support</li>
+            <li>✓ SLA guarantee</li>
+          </ul>
+          <a href="#" class="btn btn-outline w-full">Contact sales</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer id="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a class="nav-brand" href="#">
+        <span class="brand-icon">⚡</span>
+        <span class="brand-text">Electric<span class="brand-accent">Pulse</span></span>
+      </a>
+      <p>The next generation of high-performance computing infrastructure. Built for developers, loved by teams.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-link">Twitter</a>
+        <a href="#" class="social-link">GitHub</a>
+        <a href="#" class="social-link">Discord</a>
+        <a href="#" class="social-link">LinkedIn</a>
+      </div>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="#">Features</a>
+        <a href="#">Pricing</a>
+        <a href="#">Changelog</a>
+        <a href="#">Roadmap</a>
+      </div>
+      <div class="footer-col">
+        <h4>Developers</h4>
+        <a href="#">Documentation</a>
+        <a href="#">API Reference</a>
+        <a href="#">SDKs</a>
+        <a href="#">Status</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About</a>
+        <a href="#">Blog</a>
+        <a href="#">Careers</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Security</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Electric Pulse Inc. All rights reserved.</span>
+    <span>Made with ❤️ for developers</span>
+  </div>
+</footer>
+
+<script src="site.js"></script>
+</body>
+</html>

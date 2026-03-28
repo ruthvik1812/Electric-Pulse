@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Electric Pulse — Sci-Fi HUD Computer Tour</title>
+  <meta name="description" content="An immersive Sci-Fi HUD journey through computer hardware. Explore CPU, RAM, GPU, Storage and more in a stunning cyber-circuitry interface." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet" />
+
+  <!-- GSAP CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/design-system.css" />
+  <link rel="stylesheet" href="css/cursor.css" />
+  <link rel="stylesheet" href="css/sidebar.css" />
+  <link rel="stylesheet" href="css/tooltips.css" />
+  <link rel="stylesheet" href="css/glitch.css" />
+  <link rel="stylesheet" href="css/sections.css" />
+  <link rel="stylesheet" href="css/diagnostics.css" />
+  <link rel="stylesheet" href="css/vfx.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/mobile-nav.css" />
+  <link rel="stylesheet" href="css/features.css" />
+</head>
+<body>
+
+<!-- AURORA CANVAS -->
+<canvas id="aurora-canvas" aria-hidden="true"></canvas>
+<!-- ARC LIGHTNING CANVAS -->
+<canvas id="arc-canvas" aria-hidden="true"></canvas>
+<!-- PARTICLE CANVAS -->
+<canvas id="particle-canvas" aria-hidden="true"></canvas>
+<!-- MATRIX RAIN CANVAS -->
+<canvas id="matrix-canvas" aria-hidden="true"></canvas>
+<!-- CONFETTI CANVAS -->
+<canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+<!-- Matrix secret message overlay -->
+<div id="matrix-message" aria-hidden="true">
+  <div class="matrix-secret">◈ QUANTUM CORE UNLOCKED ◈</div>
+  <div class="matrix-sub">YOU FOUND THE KONAMI SEQUENCE — SYSTEM OVERRIDE ACTIVE</div>
+</div>
+
+<!-- Journey complete toast -->
+<div id="journey-complete-toast" role="status" aria-live="polite">
+  ◈ JOURNEY COMPLETE
+  <p>ALL 6 LAYERS OF SILICON EXPLORED</p>
+</div>
+
+<!-- Thermal Warning Banner -->
+<div id="thermal-warning" aria-live="assertive">
+  THERMAL THROTTLE ACTIVE — CORE TEMPERATURE CRITICAL — REDUCING BOOST CLOCK
+</div>
+
+<!-- ╔══════════════════════════════════╗ -->
+<!-- ║   TOP NAV BAR                    ║ -->
+<!-- ╚══════════════════════════════════╝ -->
+<nav id="top-nav" aria-label="Site navigation">
+  <span class="nav-logo display">⚡ ELECTRIC PULSE</span>
+  <div class="nav-status">
+    <span id="nav-active-section" aria-live="polite"></span>
+    <button id="sound-btn" aria-label="Toggle ambient sound">🔇 AMBIENT</button>
+    <button id="overclock-btn" aria-label="Toggle overclock mode">⚡ OVERCLOCK</button>
+    <span class="nav-pill green pulse">● ONLINE</span>
+    <span class="nav-pill cyan" id="nav-time">00:00:00</span>
+    <span class="nav-pill" style="background:rgba(168,85,247,0.1);color:#A855F7;border:1px solid rgba(168,85,247,0.25);">v2.4.1</span>
+  </div>
+  <button id="hamburger" aria-label="Open navigation menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ╔══════════════════════════════════╗ -->
+<!-- ║   CUSTOM CURSOR                  ║ -->
+<!-- ╚══════════════════════════════════╝ -->
+<div id="cursor-outer"></div>
+<div id="cursor-inner"></div>
+
+<!-- ╔══════════════════════════════════╗ -->
+<!-- ║   GLITCH OVERLAY                 ║ -->
+<!-- ╚══════════════════════════════════╝ -->
+<div id="glitch-overlay"></div>
+
+<!-- ╔══════════════════════════════════════════════════════════╗ -->
+<!-- ║   MOBILE NAVIGATION DRAWER                              ║ -->
+<!-- ╚══════════════════════════════════════════════════════════╝ -->
+<div id="mobile-backdrop" aria-hidden="true"></div>
+<nav id="mobile-drawer" aria-label="Mobile site navigation">
+  <div class="drawer-header">◈ NAVIGATE</div>
+  <button class="drawer-section-link" data-section="boot"        aria-label="Go to Boot">       <span class="drawer-num">00</span><span class="drawer-name">BOOT SCREEN</span>   <span class="drawer-dot"></span></button>
+  <button class="drawer-section-link" data-section="motherboard" aria-label="Go to Motherboard"><span class="drawer-num">01</span><span class="drawer-name">MOTHERBOARD</span>   <span class="drawer-dot"></span></button>
+  <button class="drawer-section-link" data-section="cpu"         aria-label="Go to CPU">        <span class="drawer-num">02</span><span class="drawer-name">PROCESSOR</span>     <span class="drawer-dot"></span></button>
+  <button class="drawer-section-link" data-section="ram"         aria-label="Go to RAM">        <span class="drawer-num">03</span><span class="drawer-name">MEMORY</span>        <span class="drawer-dot"></span></button>
+  <button class="drawer-section-link" data-section="gpu"         aria-label="Go to GPU">        <span class="drawer-num">04</span><span class="drawer-name">GRAPHICS</span>      <span class="drawer-dot"></span></button>
+  <button class="drawer-section-link" data-section="storage"     aria-label="Go to Storage">    <span class="drawer-num">05</span><span class="drawer-name">STORAGE</span>       <span class="drawer-dot"></span></button>
+  <button class="drawer-section-link" data-section="summary"     aria-label="Go to Summary">    <span class="drawer-num">06</span><span class="drawer-name">DIAGNOSTICS</span>   <span class="drawer-dot"></span></button>
+</nav>
+
+<!-- ── MOBILE BOTTOM PROGRESS BAR ── -->
+<div id="mobile-progress" aria-hidden="true"><div id="mobile-progress-fill"></div></div>
+
+<!-- ╔══════════════════════════════════════════════════════════╗ -->
+<!-- ║   KEYBOARD SHORTCUTS HUD (press ?)                      ║ -->
+<!-- ╚══════════════════════════════════════════════════════════╝ -->
+<div id="shortcuts-hud" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts">
+  <div class="hud-box">
+    <div class="hud-title">◈ SHORTCUTS</div>
+    <div class="hud-row"><span>Toggle diagnostics</span>       <span class="hud-key"><span class="kbd">D</span></span></div>
+    <div class="hud-row"><span>Show this HUD</span>            <span class="hud-key"><span class="kbd">?</span></span></div>
+    <div class="hud-row"><span>Close / escape</span>           <span class="hud-key"><span class="kbd">Esc</span></span></div>
+    <div class="hud-row"><span>Overclock mode</span>           <span class="hud-key">⚡ Button in nav</span></div>
+    <div class="hud-row"><span>Ambient sound</span>            <span class="hud-key">🔇 Button in nav</span></div>
+    <div class="hud-row"><span>Secret Easter egg</span>        <span class="hud-key"><span class="kbd">↑↑↓↓←→←→BA</span></span></div>
+    <div class="hud-row"><span>Click CPU core</span>           <span class="hud-key">→ Frequency modal</span></div>
+    <div class="hud-row"><span>Click RAM stick</span>          <span class="hud-key">→ Burst refill</span></div>
+    <div class="hud-row"><span>Hover comp cards</span>         <span class="hud-key">→ Bento tooltip + 3D tilt</span></div>
+    <div class="hud-close"><button class="hud-close-btn" id="hud-close-btn">CLOSE ✕</button></div>
+  </div>
+</div>
+
+<!-- ╔══════════════════════════════════════════════════════════╗ -->
+<!-- ║   CPU CORE DETAIL MODAL                                 ║ -->
+<!-- ╚══════════════════════════════════════════════════════════╝ -->
+<div id="core-modal" role="dialog" aria-modal="true" aria-label="CPU Core details">
+  <div class="modal-box">
+    <button class="modal-close" id="modal-close-btn" aria-label="Close modal">✕</button>
+    <div class="modal-title" id="modal-core-name">▸ P-CORE 0</div>
+    <div class="modal-freq" id="modal-freq-val">3.20</div>
+    <div class="modal-unit">GHz — LIVE FREQUENCY</div>
+    <div class="modal-stats">
+      <div class="modal-stat-cell"><div class="modal-stat-label">ARCH</div>      <div class="modal-stat-value" id="modal-core-type">Raptor Cove</div></div>
+      <div class="modal-stat-cell"><div class="modal-stat-label">L2 CACHE</div>  <div class="modal-stat-value" id="modal-core-l2">2 MB</div></div>
+      <div class="modal-stat-cell"><div class="modal-stat-label">POWER</div>     <div class="modal-stat-value" id="modal-core-pwr">18.4 W</div></div>
+      <div class="modal-stat-cell"><div class="modal-stat-label">PROCESS</div>   <div class="modal-stat-value">Intel 4 (10nm)</div></div>
+    </div>
+    <div class="modal-load-bar"><div class="modal-load-fill" id="modal-load-fill" style="width:65%"></div></div>
+  </div>
+</div>
+
+<!-- ╔══════════════════════════════════╗ -->
+<!-- ║   VOLTAGE SIDEBAR (right)        ║ -->
+<!-- ╚══════════════════════════════════╝ -->
+<div id="voltage-sidebar" aria-hidden="true">
+  <span id="voltage-label-top">MAX</span>
+  <div id="voltage-track">
+    <div id="voltage-fill"></div>
+  </div>
+  <span id="voltage-label-bot">0V</span>
+  <div id="voltage-percent">0%</div>
+</div>
+
+<!-- ╔══════════════════════════════════╗ -->
+<!-- ║   SECTION DOTS (left)            ║ -->
+<!-- ╚══════════════════════════════════╝ -->
+<nav id="section-dots" aria-label="Section navigation">
+  <div class="s-dot active"  data-i="0"><span class="dot-label">Boot</span></div>
+  <div class="s-dot"         data-i="1"><span class="dot-label">Motherboard</span></div>
+  <div class="s-dot"         data-i="2"><span class="dot-label">CPU</span></div>
+  <div class="s-dot"         data-i="3"><span class="dot-label">RAM</span></div>
+  <div class="s-dot"         data-i="4"><span class="dot-label">GPU</span></div>
+  <div class="s-dot"         data-i="5"><span class="dot-label">Storage</span></div>
+  <div class="s-dot"         data-i="6"><span class="dot-label">Summary</span></div>
+</nav>
+
+<!-- ╔══════════════════════════════════╗ -->
+<!-- ║   DIAGNOSTICS OVERLAY (D-key)    ║ -->
+<!-- ╚══════════════════════════════════╝ -->
+<div id="diag-overlay" aria-hidden="true" aria-label="System diagnostics overlay">
+  <div class="diag-corner diag-corner-tl"></div>
+  <div class="diag-corner diag-corner-tr"></div>
+  <div class="diag-corner diag-corner-bl"></div>
+  <div class="diag-corner diag-corner-br"></div>
+  <div id="diag-banner">◈ SYSTEM DIAGNOSTICS ACTIVE ◈</div>
+</div>
+
+<!-- D-key hint -->
+<div id="diag-hint">Press <kbd>D</kbd> to toggle SYSTEM DIAGNOSTICS</div>
+
+<!-- ╔══════════════════════════════════════════════════════════╗ -->
+<!-- ║  SECTION 0: BOOT SCREEN                                   ║ -->
+<!-- ╚══════════════════════════════════════════════════════════╝ -->
+<section id="boot" class="section circuit-bg">
+  <div class="aurora-bar"></div>
+  <!-- Floating orbs -->
+  <div class="orb" style="width:400px;height:400px;background:rgba(0,242,255,0.08);top:-10%;right:-5%;"></div>
+  <div class="orb" style="width:300px;height:300px;background:rgba(168,85,247,0.07);bottom:-5%;left:10%;animation-delay:2s;"></div>
+  <div class="orb" style="width:200px;height:200px;background:rgba(236,72,153,0.06);bottom:20%;right:20%;animation-delay:4s;"></div>
+  <!-- Arc Reactor decoration -->
+  <div class="arc-reactor" aria-hidden="true">
+    <div class="arc-ring ar1">
+      <div class="arc-ring ar2">
+        <div class="arc-ring ar3">
+          <div class="arc-ring ar4"></div>
+        </div>
+      </div>
+    </div>
+    <div class="ar-core"></div>
+    <!-- tick marks -->
+    <div class="ar-tick" style="transform:translate(-50%,-50%) rotate(0deg) translateX(-82px);"></div>
+    <div class="ar-tick" style="transform:translate(-50%,-50%) rotate(45deg) translateX(-82px);"></div>
+    <div class="ar-tick" style="transform:translate(-50%,-50%) rotate(90deg) translateX(-82px);"></div>
+    <div class="ar-tick" style="transform:translate(-50%,-50%) rotate(135deg) translateX(-82px);"></div>
+    <div class="ar-tick" style="transform:translate(-50%,-50%) rotate(180deg) translateX(-82px);"></div>
+    <div class="ar-tick" style="transform:translate(-50%,-50%) rotate(225deg) translateX(-82px);"></div>
+    <div class="ar-tick" style="transform:translate(-50%,-50%) rotate(270deg) translateX(-82px);"></div>
+    <div class="ar-tick" style="transform:translate(-50%,-50%) rotate(315deg) translateX(-82px);"></div>
+  </div>
+  <!-- Decorative concentric rings -->
+  <div class="pcb-ring" style="width:700px;height:700px;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+  <div class="pcb-ring" style="width:500px;height:500px;top:50%;left:50%;transform:translate(-50%,-50%);border-color:rgba(188,255,0,0.04);"></div>
+  <div class="pcb-ring" style="width:300px;height:300px;top:50%;left:50%;transform:translate(-50%,-50%);border-color:rgba(255,45,120,0.04);"></div>
+
+  <h1 id="boot-logo" class="display flicker" aria-label="The Electric Pulse">
+    ⚡ THE ELECTRIC PULSE
+  </h1>
+  <p id="boot-tagline" class="flicker">A JOURNEY THROUGH SILICON</p>
+
+  <!-- Narrative lore -->
+  <div class="lore-card" style="margin:0 auto 24px;max-width:560px;text-align:left;">
+    <span class="lore-icon">&#x26a1;</span>
+    <span class="lore-text">Every second, the CPU in your device executes <b>billions of instructions</b>. This is the story of how electricity becomes thought.</span>
+  </div>
+
+  <!-- Terminal -->
+  <div id="terminal" class="glass" role="log" aria-label="System boot terminal">
+    <div id="terminal-header">
+      <span class="terminal-dot td-r"></span>
+      <span class="terminal-dot td-y"></span>
+      <span class="terminal-dot td-g"></span>
+      <span style="font-family:var(--font-mono);font-size:11px;color:rgba(0,242,255,0.4);margin-left:8px;">
+        pulse@system:~
+      </span>
+    </div>
+    <div id="terminal-body"><span id="terminal-cursor"></span></div>
+  </div>
+
+  <p id="scroll-hint" class="mono" style="font-size:11px;letter-spacing:.2em;color:rgba(0,242,255,0.4);">
+    SCROLL TO ENTER THE MACHINE
+  </p>
+</section>
+
+<!-- ╔══════════════════════════════════════════════════════════╗ -->
+<!-- ║  SECTION 1: MOTHERBOARD                                   ║ -->
+<!-- ╚══════════════════════════════════════════════════════════╝ -->
+<section id="motherboard" class="section circuit-bg">
+  <div class="aurora-bar" style="background:linear-gradient(90deg,transparent,#A855F7,rgba(236,72,153,0.8),#A855F7,transparent);box-shadow:0 0 12px rgba(168,85,247,0.5);"></div>
+  <div class="orb" style="width:450px;height:350px;background:rgba(168,85,247,0.10);top:10%;right:-5%;animation-duration:10s;"></div>
+  <div class="orb" style="width:250px;height:250px;background:rgba(236,72,153,0.07);bottom:0%;left:5%;animation-delay:3s;"></div>
+
+  <!-- PCB Trace SVG background -->
+  <svg id="mb-svg" viewBox="0 0 1200 700" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <!-- Horizontal traces -->
+    <path d="M0 150 H400 V250 H700 V150 H1200" stroke="#00F2FF" stroke-width="1.5"/>
+    <path d="M0 350 H200 V450 H500 V350 H900 V500 H1200" stroke="#00F2FF" stroke-width="1"/>
+    <path d="M0 550 H300 V480 H600 V550 H1200" stroke="#BCFF00" stroke-width="1"/>
+    <!-- Vertical traces -->
+    <path d="M200 0 V300 H400 V700" stroke="#00F2FF" stroke-width="1"/>
+    <path d="M600 0 V200 H800 V700" stroke="#00F2FF" stroke-width="1"/>
+    <path d="M900 0 V400 H1100 V700" stroke="#BCFF00" stroke-width="1"/>
+    <!-- Antenna pads -->
+    <rect x="195" y="295" width="10" height="10" fill="#00F2FF" opacity="0.4"/>
+    <rect x="395" y="245" width="10" height="10" fill="#00F2FF" opacity="0.4"/>
+    <rect x="595" y="195" width="10" height="10" fill="#BCFF00" opacity="0.4"/>
+    <rect x="895" y="395" width="10" height="10" fill="#00F2FF" opacity="0.4"/>
+  </svg>
+
+  <div class="section-inner" style="position:relative;z-index:1;">
+    <div class="section-text">
+      <div class="chapter-progress" aria-hidden="true">
+        <span class="chapter-num">CHAPTER 01 / 06</span>
+        <div class="chapter-bar-track"><div class="chapter-bar-fill" style="width:0%"></div></div>
+      </div>
+      <p class="section-eyebrow">LAYER 01 / MOTHERBOARD</p>
+      <h2 class="section-heading display">System<br/>Backbone</h2>
+      <p class="section-sub">
+        The motherboard is the neural network of a computer — copper traces carry electrical signals
+        at the speed of light between every component. Each chip, capacitor, and socket is a node
+        in this silicon brain.
+      </p>
+      <div class="lore-card">
+        <span class="lore-icon">&#x1F9EC;</span>
+        <span class="lore-text">A modern motherboard contains up to <b>12 layers of copper traces</b>, each thinner than a human hair. The total trace length can exceed <b>10 kilometers</b>.</span>
+      </div>
+
+      <div class="component-grid">
+
+        <!-- Socket -->
+        <div class="comp-card interactive" data-interactive>
+          <div class="bracket bracket-tl"></div><div class="bracket bracket-tr"></div>
+          <div class="bracket bracket-bl"></div><div class="bracket bracket-br"></div>
+          <div class="comp-icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="4" y="4" width="20" height="20" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="8" y="8" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1" opacity="0.5"/><line x1="4" y1="10" x2="1" y2="10" stroke="currentColor" stroke-width="1.2"/><line x1="4" y1="14" x2="1" y2="14" stroke="currentColor" stroke-width="1.2"/><line x1="4" y1="18" x2="1" y2="18" stroke="currentColor" stroke-width="1.2"/><line x1="24" y1="10" x2="27" y2="10" stroke="currentColor" stroke-width="1.2"/><line x1="24" y1="14" x2="27" y2="14" stroke="currentColor" stroke-width="1.2"/><line x1="24" y1="18" x2="27" y2="18" stroke="currentColor" stroke-width="1.2"/></svg>
+          </div>
+          <div class="comp-name display">CPU Socket</div>
+          <div class="comp-serial mono">LGA-1851</div>
+          <div class="bento-tooltip">
+            <div class="bento-title">▸ CPU SOCKET</div>
+            <div class="bento-grid">
+              <div class="bento-cell"><div class="bento-label">Type</div><div class="bento-value cyan">LGA 1851</div></div>
+              <div class="bento-cell"><div class="bento-label">Pins</div><div class="bento-value">1851</div></div>
+              <div class="bento-cell"><div class="bento-label">Voltage</div><div class="bento-value green">1.25V</div></div>
+              <div class="bento-cell"><div class="bento-label">TDP Max</div><div class="bento-value red">253W</div></div>
+              <div class="bento-cell span-2"><div class="bento-label">Compatible</div><div class="bento-value">Intel 14th Gen Core</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DIMM Slots -->
+        <div class="comp-card interactive" data-interactive>
+          <div class="bracket bracket-tl"></div><div class="bracket bracket-tr"></div>
+          <div class="bracket bracket-bl"></div><div class="bracket bracket-br"></div>
+          <div class="comp-icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="3" y="8" width="22" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="6" y="11" width="4" height="6" rx="1" fill="currentColor" opacity="0.4"/><rect x="12" y="11" width="4" height="6" rx="1" fill="currentColor" opacity="0.4"/><rect x="18" y="11" width="4" height="6" rx="1" fill="currentColor" opacity="0.4"/><line x1="7" y1="8" x2="7" y2="5" stroke="currentColor" stroke-width="1.2"/><line x1="12" y1="8" x2="12" y2="5" stroke="currentColor" stroke-width="1.2"/><line x1="17" y1="8" x2="17" y2="5" stroke="currentColor" stroke-width="1.2"/><line x1="22" y1="8" x2="22" y2="5" stroke="currentColor" stroke-width="1.2"/></svg>
+          </div>
+          <div class="comp-name display">DIMM Slots</div>
+          <div class="comp-serial mono">DDR5-6400</div>
+          <div class="bento-tooltip">
+            <div class="bento-title">▸ MEMORY SLOTS</div>
+            <div class="bento-grid">
+              <div class="bento-cell"><div class="bento-label">Slots</div><div class="bento-value cyan">4×</div></div>
+              <div class="bento-cell"><div class="bento-label">Max RAM</div><div class="bento-value">128 GB</div></div>
+              <div class="bento-cell"><div class="bento-label">Speed</div><div class="bento-value green">6400 MT/s</div></div>
+              <div class="bento-cell"><div class="bento-label">Width</div><div class="bento-value">64-bit</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PCIe -->
+        <div class="comp-card interactive" data-interactive>
+          <div class="bracket bracket-tl"></div><div class="bracket bracket-tr"></div>
+          <div class="bracket bracket-bl"></div><div class="bracket bracket-br"></div>
+          <div class="comp-icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 4 L24 10 L24 18 L14 24 L4 18 L4 10 Z" stroke="currentColor" stroke-width="1.5"/><circle cx="14" cy="14" r="4" fill="currentColor" opacity="0.3"/><circle cx="14" cy="14" r="2" fill="currentColor" opacity="0.7"/></svg>
+          </div>
+          <div class="comp-name display">PCIe 5.0</div>
+          <div class="comp-serial mono">×16 SLOT</div>
+          <div class="bento-tooltip">
+            <div class="bento-title">▸ PCIe 5.0 ×16</div>
+            <div class="bento-grid">
+              <div class="bento-cell"><div class="bento-label">Bandwidth</div><div class="bento-value cyan">128 GB/s</div></div>
+              <div class="bento-cell"><div class="bento-label">Lanes</div><div class="bento-value">×16</div></div>
+              <div class="bento-cell"><div class="bento-label">Freq</div><div class="bento-value green">32 GT/s</div></div>
+              <div class="bento-cell"><div class="bento-label">Voltage</div><div class="bento-value">3.3V</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VRM -->
+        <div class="comp-card interactive" data-interactive>
+          <div class="bracket bracket-tl"></div><div class="bracket bracket-tr"></div>
+          <div class="bracket bracket-bl"></div><div class="bracket bracket-br"></div>
+          <div class="comp-icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="4" y="7" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="7" y="10" width="3" height="8" rx="1" fill="currentColor" opacity="0.4"/><rect x="12" y="10" width="3" height="8" rx="1" fill="currentColor" opacity="0.4"/><rect x="17" y="10" width="3" height="8" rx="1" fill="currentColor" opacity="0.4"/><line x1="1" y1="12" x2="4" y2="12" stroke="currentColor" stroke-width="1.2"/><line x1="1" y1="16" x2="4" y2="16" stroke="currentColor" stroke-width="1.2"/><line x1="24" y1="12" x2="27" y2="12" stroke="currentColor" stroke-width="1.2"/><line x1="24" y1="16" x2="27" y2="16" stroke="currentColor" stroke-width="1.2"/></svg>
+          </div>
+          <div class="comp-name display">VRM</div>
+          <div class="comp-serial mono">20+1+2 PH</div>
+          <div class="bento-tooltip">
+            <div class="bento-title">▸ VOLTAGE REGULATOR</div>
+            <div class="bento-grid">
+              <div class="bento-cell"><div class="bento-label">Phases</div><div class="bento-value cyan">20+1+2</div></div>
+              <div class="bento-cell"><div class="bento-label">Current</div><div class="bento-value">120A/ph</div></div>
+              <div class="bento-cell span-2"><div class="bento-label">Controller</div><div class="bento-value">Renesas RAA229131</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chipset -->
+        <div class="comp-card interactive" data-interactive>
+          <div class="bracket bracket-tl"></div><div class="bracket bracket-tr"></div>
+          <div class="bracket bracket-bl"></div><div class="bracket bracket-br"></div>
+          <div class="comp-icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="4" y="4" width="20" height="20" rx="3" stroke="currentColor" stroke-width="1.5"/><circle cx="14" cy="14" r="5" stroke="currentColor" stroke-width="1" opacity="0.6"/><path d="M10 10 L18 18 M18 10 L10 18" stroke="currentColor" stroke-width="1" opacity="0.4"/><circle cx="14" cy="14" r="2" fill="currentColor" opacity="0.5"/></svg>
+          </div>
+          <div class="comp-name display">Chipset</div>
+          <div class="comp-serial mono">Z890</div>
+          <div class="bento-tooltip">
+            <div class="bento-title">▸ INTEL Z890</div>
+            <div class="bento-grid">
+              <div class="bento-cell"><div class="bento-label">USB 4.0</div><div class="bento-value cyan">×2 Gen2</div></div>
+              <div class="bento-cell"><div class="bento-label">SATA</div><div class="bento-value">×6</div></div>
+              <div class="bento-cell"><div class="bento-label">M.2</div><div class="bento-value green">×5</div></div>
+              <div class="bento-cell"><div class="bento-label">OC</div><div class="bento-value cyan">YES</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BIOS -->
+        <div class="comp-card interactive" data-interactive>
+          <div class="bracket bracket-tl"></div><div class="bracket bracket-tr"></div>
+          <div class="bracket bracket-bl"></div><div class="bracket bracket-br"></div>
+          <div class="comp-icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><ellipse cx="14" cy="10" rx="10" ry="4" stroke="currentColor" stroke-width="1.5"/><path d="M4 10 L4 18 C4 20.2 8.5 22 14 22 C19.5 22 24 20.2 24 18 L24 10" stroke="currentColor" stroke-width="1.5"/><line x1="4" y1="14" x2="24" y2="14" stroke="currentColor" stroke-width="1" opacity="0.4"/></svg>
+          </div>
+          <div class="comp-name display">BIOS</div>
+          <div class="comp-serial mono">UEFI 3.2</div>
+          <div class="bento-tooltip">
+            <div class="bento-title">▸ UEFI BIOS</div>
+            <div class="bento-grid">
+              <div class="bento-cell"><div class="bento-label">Flash</div><div class="bento-value cyan">256 Mb</div></div>
+              <div class="bento-cell"><div class="bento-label">Standard</div><div class="bento-value">UEFI 2.8</div></div>
+              <div class="bento-cell span-2"><div class="bento-label">Security</div><div class="bento-value">Secure Boot + TPM 2.0</div></div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /component-grid -->
+    </div><!-- /section-text -->
+  </div><!-- /section-inner -->
+</section>
+
+<!-- ╔══════════════════════════════════════════════════════════╗ -->
+<!-- ║  SECTION 2: CPU                                           ║ -->
+<!-- ╚══════════════════════════════════════════════════════════╝ -->
+<section id="cpu" class="section">
+  <div class="aurora-bar" style="background:linear-gradient(90deg,transparent,#F97316,rgba(252,211,77,0.8),#F97316,transparent);box-shadow:0 0 12px rgba(249,115,22,0.5);"></div>
+  <div class="orb" style="width:400px;height:400px;background:rgba(249,115,22,0.10);top:-10%;right:5%;animation-duration:9s;"></div>
+  <div class="orb" style="width:220px;height:220px;background:rgba(252,211,77,0.08);bottom:5%;left:50%;animation-delay:2s;"></div>
+  <div class="section-inner">
+    <div class="section-text">
+      <div class="chapter-progress" aria-hidden="true">
+        <span class="chapter-num">CHAPTER 02 / 06</span>
+        <div class="chapter-bar-track"><div class="chapter-bar-fill" style="width:0%"></div></div>
+      </div>
+      <p class="section-eyebrow">LAYER 02 / PROCESSOR</p>
+      <h2 class="section-heading display glitch-text" data-text="The Brain">The Brain</h2>
+      <p class="section-sub">
+        Inside the CPU die, billions of transistors switch 5 billion times per second.
+        Cache hierarchies, branch predictors, and out-of-order execution engines keep silicon
+        fed with data. <b style="color:#F97316">Click a core</b> to inspect it live.
+      </p>
+      <div class="lore-card">
+        <span class="lore-icon">&#x26a1;</span>
+        <span class="lore-text">Intel’s i9-14900K has <b>8.6 billion transistors</b> on a die smaller than your thumbnail. If each transistor were a person, you’d need the population of Earth more than <b>1,000 times</b>.</span>
+      </div>
+
+      <div class="cpu-stats">
+        <div class="stat-pill mono"><b>24</b> Cores</div>
+        <div class="stat-pill mono"><b>32</b> Threads</div>
+        <div class="stat-pill mono"><b>6.0</b> GHz Boost</div>
+        <div class="stat-pill mono"><b class="neon-green">36 MB</b> L3</div>
+        <div class="stat-pill mono"><b>10nm</b> Intel 4</div>
+      </div>
+    </div>
+
+    <div class="section-visual">
+      <div class="cpu-die" aria-label="CPU die diagram">
+
+        <!-- 4×4 grid = 16 cells; top row = L3 cache, rest = 15 cores -->
+        <div class="cache-l3 interactive" data-interactive>
+          <div class="bento-tooltip" style="width:220px;">
+            <div class="bento-title">▸ L3 SHARED CACHE</div>
+            <div class="bento-grid">
+              <div class="bento-cell"><div class="bento-label">Size</div><div class="bento-value cyan">36 MB</div></div>
+              <div class="bento-cell"><div class="bento-label">Latency</div><div class="bento-value">~35 cycles</div></div>
+              <div class="bento-cell span-2"><div class="bento-label">Shared by</div><div class="bento-value">All P-Cores &amp; E-Cores</div></div>
+            </div>
+          </div>
+          L3 CACHE — 36MB
+        </div>
+
+        <!-- 15 cores: 8 P-cores + 7 E-cores -->
+        <div class="core interactive" data-interactive id="core-0">
+          <div class="bento-tooltip" style="width:200px;bottom:calc(100% + 8px);">
+            <div class="bento-title">▸ P-CORE 0</div>
+            <div class="bento-grid">
+              <div class="bento-cell"><div class="bento-label">Type</div><div class="bento-value cyan">Raptor Cove</div></div>
+              <div class="bento-cell"><div class="bento-label">Freq</div><div class="bento-value">5.8 GHz</div></div>
+              <div class="bento-cell"><div class="bento-label">L2</div><div class="bento-value green">2 MB</div></div>
+              <div class="bento-cell"><div class="bento-label">L1D</div><div class="bento-value">48 KB</div></div>
+            </div>
+          </div>
+          P0
+        </div>
+        <div class="core interactive" data-interactive id="core-1">P1</div>
+        <div class="core interactive" data-interactive id="core-2">P2</div>
+        <div class="core interactive" data-interactive id="core-3">P3</div>
+        <div class="core interactive" data-interactive id="core-4">P4</div>
+        <div class="core interactive" data-interactive id="core-5">P5</div>
+        <div class="core interactive" data-interactive id="core-6">P6</div>
+        <div class="core interactive" data-interactive id="core-7">P7</div>
+        <div class="core interactive" data-interactive id="core-e0">
+          <div class="bento-tooltip" style="width:200px;bottom:calc(100% + 8px);">
+            <div class="bento-title">▸ E-CORE 0</div>
+            <div class="bento-grid">
+              <div class="bento-cell"><div class="bento-label">Type</div><div class="bento-value cyan">Gracemont</div></div>
+              <div class="bento-cell"><div class="bento-label">Freq</div><div class="bento-value">4.3 GHz</div></div>
+              <div class="bento-cell"><div class="bento-label">L2</div><div class="bento-value green">4 MB</div></div>
+            </div>
+          </div>
+          E0
+        </div>
+        <div class="core interactive" data-interactive id="core-e1" style="font-size:8px;">E1</div>
+        <div class="core interactive" data-interactive id="core-e2" style="font-size:8px;">E2</div>
+        <div class="core interactive" data-interactive id="core-e3" style="font-size:8px;">E3</div>
+        <div class="core interactive" data-interactive id="core-e4" style="font-size:8px;">E4</div>
+        <div class="core interactive" data-interactive id="core-e5" style="font-size:8px;">E5</div>
+        <div class="core interactive" data-interactive id="core-e6" style="font-size:8px;">E6</div>
+        <div class="core interactive" data-interactive id="core-e7" style="font-size:8px;">E7</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════════════════════════╗ -->
+<!-- ║  SECTION 3: RAM                                           ║ -->
+<!-- ╚══════════════════════════════════════════════════════════╝ -->
+<section id="ram" class="section circuit-bg">
+  <div class="aurora-bar" style="background:linear-gradient(90deg,transparent,#22D3EE,rgba(0,242,255,0.8),#22D3EE,transparent);box-shadow:0 0 12px rgba(34,211,238,0.5);"></div>
+  <div class="orb" style="width:500px;height:280px;background:rgba(34,211,238,0.08);top:20%;left:-10%;animation-duration:11s;"></div>
+  <div class="orb" style="width:200px;height:200px;background:rgba(188,255,0,0.07);bottom:10%;right:10%;animation-delay:4s;"></div>
+  <div class="section-inner">
+    <div class="section-text">
+      <div class="chapter-progress" aria-hidden="true">
+        <span class="chapter-num">CHAPTER 03 / 06</span>
+        <div class="chapter-bar-track"><div class="chapter-bar-fill" style="width:0%"></div></div>
+      </div>
+      <p class="section-eyebrow">LAYER 03 / MEMORY</p>
+      <h2 class="section-heading display">RAM — Volatile<br/>Lightning</h2>
+      <p class="section-sub">
+        DDR5 SDRAM writes and reads at 6400 MT/s per channel. Data evaporates the moment
+        power cuts — a ghost memory that lives only in the present cycle.
+      </p>
+      <div class="lore-card">
+        <span class="lore-icon">&#x1F4A1;</span>
+        <span class="lore-text">Each DDR5 cell stores one bit using a single capacitor the size of <b>90 nanometers</b>. At 6400 MT/s, data moves faster than <b>50 GB/s</b> per-channel.</span>
+      </div>
+
+      <!-- Data bus bars -->
+      <div class="ram-data-row" aria-hidden="true">
+        <div class="data-bar" style="animation-delay:.0s;animation-duration:1.8s;flex:3;"></div>
+        <div class="data-bar" style="animation-delay:.3s;animation-duration:2.1s;flex:2;background:linear-gradient(90deg,var(--cyan),transparent);"></div>
+        <div class="data-bar" style="animation-delay:.6s;animation-duration:1.5s;flex:4;"></div>
+        <div class="data-bar" style="animation-delay:.9s;animation-duration:2.4s;flex:1;background:linear-gradient(90deg,var(--magenta),transparent);"></div>
+        <div class="data-bar" style="animation-delay:1.2s;animation-duration:1.9s;flex:3;"></div>
+      </div>
+
+      <div class="ram-sticks" aria-label="RAM memory sticks usage visualization">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div class="ram-stick interactive" data-interactive>
+            <div class="ram-fill" style="height:0%"></div>
+            <div class="ram-label">DIMM A1</div>
+          </div>
+          <span class="mono neon-green" style="font-size:10px">72%</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div class="ram-stick interactive" data-interactive>
+            <div class="ram-fill" style="height:0%"></div>
+            <div class="ram-label">DIMM A2</div>
+          </div>
+          <span class="mono neon-green" style="font-size:10px">88%</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div class="ram-stick interactive" data-interactive>
+            <div class="ram-fill" style="height:0%"></div>
+            <div class="ram-label">DIMM B1</div>
+          </div>
+          <span class="mono neon-green" style="font-size:10px">45%</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div class="ram-stick interactive" data-interactive>
+            <div class="ram-fill" style="height:0%"></div>
+            <div class="ram-label">DIMM B2</div>
+          </div>
+          <span class="mono neon-green" style="font-size:10px">91%</span>
+        </div>
+      </div>
+
+      <!-- Stats row -->
+      <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;">
+        <div class="stat-pill mono"><b class="neon-green">64 GB</b> Total</div>
+        <div class="stat-pill mono"><b>50.2 GB</b> Used</div>
+        <div class="stat-pill mono"><b>6400</b> MT/s</div>
+        <div class="stat-pill mono"><b>CL36</b> Latency</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════════════════════════╗ -->
+<!-- ║  SECTION 4: GPU                                           ║ -->
+<!-- ╚══════════════════════════════════════════════════════════╝ -->
+<section id="gpu" class="section">
+  <div class="aurora-bar" style="background:linear-gradient(90deg,transparent,#EC4899,rgba(168,85,247,0.8),#EC4899,transparent);box-shadow:0 0 12px rgba(236,72,153,0.5);"></div>
+  <div class="orb" style="width:500px;height:500px;background:rgba(236,72,153,0.10);top:50%;left:50%;transform:translate(-50%,-50%);animation-duration:13s;"></div>
+  <div class="orb" style="width:200px;height:200px;background:rgba(168,85,247,0.08);bottom:10%;left:5%;animation-delay:5s;"></div>
+  <canvas id="shader-canvas"></canvas>
+
+  <div class="section-inner">
+    <div class="section-text">
+      <div class="chapter-progress" aria-hidden="true">
+        <span class="chapter-num">CHAPTER 04 / 06</span>
+        <div class="chapter-bar-track"><div class="chapter-bar-fill" style="width:0%"></div></div>
+      </div>
+      <p class="section-eyebrow">LAYER 04 / GRAPHICS</p>
+      <h2 class="section-heading display glitch-text" data-text="Pixel Engine">Pixel Engine</h2>
+      <p class="section-sub">
+        The RTX 4090 packs 16,384 CUDA cores and 76 billion transistors into 608 mm².
+        Ray tracing, tensor acceleration, and DLSS 3 redefine what real-time rendering means.
+      </p>
+      <div class="lore-card">
+        <span class="lore-icon">&#x1F52D;</span>
+        <span class="lore-text">The RTX 4090’s 76 billion transistors, if laid end to end at 2nm pitch, would <b>circle Earth twice</b>. It processes one ray-traced frame in under <b>5 milliseconds</b>.</span>
+      </div>
+
+      <!-- Shader pipeline -->
+      <div class="shader-pipeline" role="list" aria-label="GPU shader pipeline stages">
+        <div class="pipe-stage interactive glass" data-interactive role="listitem">
+          <div class="pipe-icon">🔺</div>
+          <div class="pipe-label mono">Vertex<br/>Shader</div>
+          <div class="pipe-arrow">›</div>
+          <div class="bento-tooltip">
+            <div class="bento-title">▸ VERTEX STAGE</div>
+            <div class="bento-grid full">
+              <div class="bento-cell"><div class="bento-label">Transforms</div><div class="bento-value cyan">3D→2D</div></div>
+              <div class="bento-cell"><div class="bento-label">Units</div><div class="bento-value">512 SM</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="pipe-stage interactive glass" data-interactive role="listitem">
+          <div class="pipe-icon">📐</div>
+          <div class="pipe-label mono">Geometry<br/>Shader</div>
+          <div class="pipe-arrow">›</div>
+          <div class="bento-tooltip">
+            <div class="bento-title">▸ GEOMETRY</div>
+            <div class="bento-grid full">
+              <div class="bento-cell"><div class="bento-label">Primitives</div><div class="bento-value cyan">Mesh Shaders</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="pipe-stage interactive glass" data-interactive role="listitem">
+          <div class="pipe-icon">🎨</div>
+          <div class="pipe-label mono">Fragment<br/>Shader</div>
+          <div class="pipe-arrow">›</div>
+          <div class="bento-tooltip">
+            <div class="bento-title">▸ FRAGMENT STAGE</div>
+            <div class="bento-grid full">
+              <div class="bento-cell"><div class="bento-label">Rate</div><div class="bento-value cyan">191 GPixels/s</div></div>
+              <div class="bento-cell"><div class="bento-label">CUDA</div><div class="bento-value">16,384 cores</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="pipe-stage interactive glass" data-interactive role="listitem">
+          <div class="pipe-icon">🔦</div>
+          <div class="pipe-label mono">Ray<br/>Tracing</div>
+          <div class="pipe-arrow">›</div>
+          <div class="bento-tooltip">
+            <div class="bento-title">▸ RT CORES</div>
+            <div class="bento-grid full">
+              <div class="bento-cell"><div class="bento-label">RT Cores</div><div class="bento-value cyan">128</div></div>
+              <div class="bento-cell"><div class="bento-label">Perf</div><div class="bento-value green">191 TFLOPS</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="pipe-stage interactive glass" data-interactive role="listitem">
+          <div class="pipe-icon">✨</div>
+          <div class="pipe-label mono">DLSS 3<br/>Output</div>
+          <div class="bento-tooltip">
+            <div class="bento-title">▸ DLSS 3 / AI</div>
+            <div class="bento-grid full">
+              <div class="bento-cell"><div class="bento-label">Tensor</div><div class="bento-value cyan">512 Cores</div></div>
+              <div class="bento-cell"><div class="bento-label">AI TOPS</div><div class="bento-value green">1,321</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;">
+        <div class="stat-pill mono"><b class="neon-cyan">24 GB</b> GDDR6X</div>
+        <div class="stat-pill mono"><b>1008 GB/s</b> BW</div>
+        <div class="stat-pill mono"><b>450W</b> TDP</div>
+      </div>
+
+      <!-- GPU Benchmark Chart -->
+      <div class="benchmark-chart" role="region" aria-label="GPU performance comparison">
+        <div class="bench-title mono">COMPUTE BENCHMARK — FP32 TFLOPS</div>
+        <div class="bench-row">
+          <span class="bench-label mono">RTX 4090</span>
+          <div class="bench-track"><div class="bench-bar winner" data-score="191"></div></div>
+          <span class="bench-score top">191</span>
+        </div>
+        <div class="bench-row">
+          <span class="bench-label mono">RX 7900 XTX</span>
+          <div class="bench-track"><div class="bench-bar second" data-score="122"></div></div>
+          <span class="bench-score">122</span>
+        </div>
+        <div class="bench-row">
+          <span class="bench-label mono">RTX 4080</span>
+          <div class="bench-track"><div class="bench-bar third" data-score="97"></div></div>
+          <span class="bench-score">97</span>
+        </div>
+        <div class="bench-row">
+          <span class="bench-label mono">RTX 3090 Ti</span>
+          <div class="bench-track"><div class="bench-bar fourth" data-score="82"></div></div>
+          <span class="bench-score">82</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════════════════════════╗ -->
+<!-- ║  SECTION 5: STORAGE                                       ║ -->
+<!-- ╚══════════════════════════════════════════════════════════╝ -->
+<section id="storage" class="section circuit-bg">
+  <div class="aurora-bar" style="background:linear-gradient(90deg,transparent,#BCFF00,rgba(34,211,238,0.8),#BCFF00,transparent);box-shadow:0 0 12px rgba(188,255,0,0.5);"></div>
+  <div class="orb" style="width:380px;height:380px;background:rgba(188,255,0,0.08);top:10%;right:5%;animation-duration:8s;"></div>
+  <div class="orb" style="width:220px;height:220px;background:rgba(34,211,238,0.07);bottom:15%;left:30%;animation-delay:3s;"></div>
+  <div class="section-inner">
+    <div class="section-text">
+      <div class="chapter-progress" aria-hidden="true">
+        <span class="chapter-num">CHAPTER 05 / 06</span>
+        <div class="chapter-bar-track"><div class="chapter-bar-fill" style="width:0%"></div></div>
+      </div>
+      <p class="section-eyebrow">LAYER 05 / STORAGE</p>
+      <h2 class="section-heading display">Persistent<br/>Memory</h2>
+      <p class="section-sub">
+        NVMe Gen5 SSDs achieve 14,000 MB/s sequential read —
+        that’s the entire works of Shakespeare in 0.0003 seconds.
+        The read/write head in a HDD floats 3 nm above the platter surface.
+      </p>
+<!-- System Monitor Widget -->
+<div id="sys-monitor" aria-label="Live system monitor">
+  <div class="mon-header">
+    <span>SYS::MONITOR</span>
+    <div class="mon-dot"></div>
+    <button id="mon-toggle" aria-label="Minimize monitor">▾ MIN</button>
+  </div>
+  <div id="mon-body">
+    <div class="mon-row"><span class="mon-label">CPU</span><div class="mon-track"><div class="mon-fill cpu" id="mon-fill-cpu" style="width:0%"></div></div><span class="mon-val" id="mon-val-cpu">0%</span></div>
+    <div class="mon-row"><span class="mon-label">GPU</span><div class="mon-track"><div class="mon-fill gpu" id="mon-fill-gpu" style="width:0%"></div></div><span class="mon-val" id="mon-val-gpu">0%</span></div>
+    <div class="mon-row"><span class="mon-label">RAM</span><div class="mon-track"><div class="mon-fill ram" id="mon-fill-ram" style="width:0%"></div></div><span class="mon-val" id="mon-val-ram">0%</span></div>
+    <div class="mon-row"><span class="mon-label">TEMP</span><div class="mon-track"><div class="mon-fill temp" id="mon-fill-temp" style="width:0%"></div></div><span class="mon-val" id="mon-val-temp">0°C</span></div>
+  </div>
+</div>
+
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;">
+        <div class="stat-pill mono"><b class="neon-cyan">14 GB/s</b> NVMe Read</div>
+        <div class="stat-pill mono"><b>12 GB/s</b> NVMe Write</div>
+        <div class="stat-pill mono"><b class="neon-green">4 TB</b> Capacity</div>
+        <div class="stat-pill mono"><b>0.01ms</b> Latency</div>
+      </div>
+    </div>
+
+    <div class="section-visual" style="flex-direction:column;align-items:center;gap:24px;">
+      <!-- Spinning disk platter -->
+      <div class="disk-platter" aria-label="Animated hard drive platter">
+        <div class="platter-ring p-r1"></div>
+        <div class="platter-ring p-r2"></div>
+        <div class="platter-ring p-r3"></div>
+        <div class="platter-ring p-r4"></div>
+        <div class="platter-head"></div>
+        <div class="platter-center"></div>
+      </div>
+
+      <!-- NVMe bar indicator -->
+      <div class="glass" style="padding:14px 20px;width:100%;max-width:320px;">
+        <div class="mono" style="font-size:10px;color:var(--cyan);letter-spacing:.12em;margin-bottom:10px;">NVMe ACTIVITY</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span class="mono" style="font-size:10px;color:rgba(232,244,255,0.5);">READ</span>
+              <span class="mono neon-cyan" style="font-size:10px;">13,842 MB/s</span>
+            </div>
+            <div style="height:4px;background:rgba(0,242,255,0.08);border-radius:2px;">
+              <div style="height:100%;width:97%;background:var(--cyan);border-radius:2px;box-shadow:0 0 6px var(--cyan);animation:dataFlow 2s ease-in-out infinite;"></div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span class="mono" style="font-size:10px;color:rgba(232,244,255,0.5);">WRITE</span>
+              <span class="mono neon-green" style="font-size:10px;">11,200 MB/s</span>
+            </div>
+            <div style="height:4px;background:rgba(188,255,0,0.08);border-radius:2px;">
+              <div style="height:100%;width:79%;background:var(--green);border-radius:2px;box-shadow:0 0 6px var(--green);animation:dataFlow 2.4s ease-in-out infinite;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════════════════════════╗ -->
+<!-- ║  SECTION 6: SYSTEM SUMMARY                               ║ -->
+<!-- ╚══════════════════════════════════════════════════════════╝ -->
+<section id="summary" class="section">
+  <div class="aurora-bar" style="background:linear-gradient(90deg,transparent,#FCD34D,rgba(249,115,22,0.8),#FCD34D,transparent);box-shadow:0 0 12px rgba(252,211,77,0.5);"></div>
+  <div class="orb" style="width:600px;height:400px;background:rgba(252,211,77,0.07);top:50%;left:50%;transform:translate(-50%,-50%);animation-duration:12s;"></div>
+  <div class="orb" style="width:200px;height:200px;background:rgba(236,72,153,0.07);top:5%;left:5%;animation-delay:3s;"></div>
+  <div style="position:relative;z-index:1;width:100%;">
+    <div class="chapter-progress" aria-hidden="true">
+      <span class="chapter-num">CHAPTER 06 / 06</span>
+      <div class="chapter-bar-track"><div class="chapter-bar-fill" style="width:0%"></div></div>
+    </div>
+    <p class="section-eyebrow">LAYER 06 / SYSTEM REPORT</p>
+    <h2 class="section-heading display">Full System<br/>Diagnostics</h2>
+    <p class="section-sub">
+      All components initialized. Voltage nominal. Pulse detected. You’ve traveled through
+      the entire machine — from boot sequences to spinning platters. The journey through silicon is complete.
+    </p>
+
+    <div class="summary-grid">
+      <div class="summary-card glass">
+        <span class="summary-number neon-cyan">24</span>
+        <div class="summary-label mono">CPU CORES</div>
+        <div class="summary-bar"><div class="summary-bar-fill" style="width:0%;background:var(--cyan);box-shadow:0 0 6px var(--cyan);"></div></div>
+      </div>
+      <div class="summary-card glass">
+        <span class="summary-number neon-green">64 GB</span>
+        <div class="summary-label mono">TOTAL RAM</div>
+        <div class="summary-bar"><div class="summary-bar-fill" style="width:0%;background:var(--green);box-shadow:0 0 6px var(--green);"></div></div>
+      </div>
+      <div class="summary-card glass">
+        <span class="summary-number" style="color:var(--magenta);text-shadow:0 0 16px var(--magenta)">24 GB</span>
+        <div class="summary-label mono">GPU VRAM</div>
+        <div class="summary-bar"><div class="summary-bar-fill" style="width:0%;background:var(--magenta);box-shadow:0 0 6px var(--magenta);"></div></div>
+      </div>
+      <div class="summary-card glass">
+        <span class="summary-number neon-cyan">6.0<span style="font-size:.5em">GHz</span></span>
+        <div class="summary-label mono">BOOST CLOCK</div>
+        <div class="summary-bar"><div class="summary-bar-fill" style="width:0%"></div></div>
+      </div>
+      <div class="summary-card glass">
+        <span class="summary-number neon-green">4 TB</span>
+        <div class="summary-label mono">NVMe STORAGE</div>
+        <div class="summary-bar"><div class="summary-bar-fill" style="width:0%;background:var(--green);box-shadow:0 0 6px var(--green);"></div></div>
+      </div>
+      <div class="summary-card glass">
+        <span class="summary-number neon-cyan">100%</span>
+        <div class="summary-label mono">SYSTEM HEALTH</div>
+        <div class="summary-bar"><div class="summary-bar-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <div class="final-cta">
+      <button class="btn-primary display" id="btn-restart">↺ RESTART JOURNEY</button>
+      <button class="btn-secondary display" id="btn-diag">◈ RUN DIAGNOSTICS</button>
+    </div>
+
+    <!-- Footer -->
+    <p class="mono" style="margin-top:40px;font-size:10px;color:rgba(232,244,255,0.2);letter-spacing:.15em;">
+      THE ELECTRIC PULSE © 2025 &nbsp;·&nbsp; BUILT WITH SILICON &amp; LIGHT &nbsp;·&nbsp;
+      PRESS <kbd class="kbd" style="color:var(--cyan);">D</kbd> DIAGNOSTICS
+      &nbsp;·&nbsp; PRESS <kbd class="kbd" style="color:var(--cyan);">?</kbd> SHORTCUTS
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ -->
+<!--   JS — order matters              -->
+<!-- ═══════════════════════════════════ -->
+<script>
+  // Inline: CTA buttons
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('btn-restart').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    document.getElementById('btn-diag').addEventListener('click', () => {
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'D' }));
+    });
+  });
+</script>
+<script src="js/cursor.js" defer></script>
+<script src="js/sidebar.js" defer></script>
+<script src="js/glitch.js" defer></script>
+<script src="js/diagnostics.js" defer></script>
+<script src="js/particles.js" defer></script>
+<script src="js/aurora.js" defer></script>
+<script src="js/main.js" defer></script>
+<script src="js/magnetic.js" defer></script>
+<script src="js/interactions.js" defer></script>
+<script src="js/three-scene.js" defer></script>
+<script src="js/gsap-scroll.js" defer></script>
+<script src="js/features.js" defer></script>
+<script>
+  // Live clock in nav
+  setInterval(() => {
+    const el = document.getElementById('nav-time');
+    if (el) el.textContent = new Date().toTimeString().slice(0, 8);
+  }, 1000);
+</script>
+
+
+</body>
+</html>

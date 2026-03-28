@@ -1,0 +1,71 @@
+/* ═══════════════════════════════════════
+   DIAGNOSTICS OVERLAY (D-key)
+═══════════════════════════════════════ */
+#diag-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9990;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+#diag-overlay.active { opacity: 1; }
+
+/* Corner logs */
+.diag-corner {
+  position: fixed;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.8;
+  padding: 12px 16px;
+  max-width: 260px;
+  background: rgba(0,0,0,0.75);
+  border: 1px solid rgba(0,242,255,0.2);
+  border-radius: 6px;
+  pointer-events: none;
+}
+.diag-corner-tl { top: 20px;    left: 20px;   color: var(--cyan); }
+.diag-corner-tr { top: 20px;    right: 20px;  color: var(--green); text-align: right; }
+.diag-corner-bl { bottom: 20px; left: 20px;   color: rgba(255,45,120,0.8); }
+.diag-corner-br { bottom: 20px; right: 20px;  color: rgba(255,200,0,0.8); text-align: right; }
+
+.diag-corner span { opacity: 0.5; }
+.diag-corner b    { opacity: 1; letter-spacing: 0.05em; }
+
+/* Centre diagnostics banner */
+#diag-banner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-size: clamp(14px, 2vw, 20px);
+  color: var(--cyan);
+  letter-spacing: 0.3em;
+  text-shadow: 0 0 20px var(--cyan);
+  animation: diagPulse 1.4s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes diagPulse { 0%,100%{opacity:0.8} 50%{opacity:0.3} }
+
+/* Diag badge key hint */
+#diag-hint {
+  position: fixed;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(0,242,255,0.4);
+  letter-spacing: 0.15em;
+  z-index: 1001;
+  pointer-events: none;
+}
+#diag-hint kbd {
+  display: inline-block;
+  padding: 2px 8px;
+  border: 1px solid rgba(0,242,255,0.3);
+  border-radius: 4px;
+  color: var(--cyan);
+  margin: 0 4px;
+}

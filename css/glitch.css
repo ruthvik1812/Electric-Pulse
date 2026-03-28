@@ -1,0 +1,69 @@
+/* ═══════════════════════════════════════
+   GLITCH TRANSITION + EFFECTS
+═══════════════════════════════════════ */
+#glitch-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0;
+}
+#glitch-overlay.active {
+  animation: glitchFire 0.22s steps(1) forwards;
+}
+
+@keyframes glitchFire {
+  0%   { opacity:1; background: rgba(0,242,255,0.06); clip-path: inset(20% 0 70% 0); }
+  10%  { clip-path: inset(55% 0 10% 0); background: rgba(255,45,120,0.08); transform: translateX(-4px); }
+  20%  { clip-path: inset(10% 0 80% 0); background: rgba(0,242,255,0.10); transform: translateX(4px); }
+  30%  { clip-path: inset(80% 0 5%  0); background: rgba(188,255,0,0.06); transform: translateX(0); }
+  40%  { clip-path: inset(30% 0 50% 0); background: rgba(255,45,120,0.06); transform: translateX(-2px); }
+  50%  { clip-path: inset(60% 0 20% 0); background: rgba(0,242,255,0.06); transform: translateX(2px); }
+  60%  { clip-path: inset(5%  0 85% 0); background: rgba(188,255,0,0.08); transform: translateX(-1px); }
+  80%  { clip-path: inset(40% 0 40% 0); background: rgba(0,242,255,0.04); transform: translateX(0); }
+  100% { opacity:0; }
+}
+
+/* ── Component glitch on hover ── */
+.glitch-text {
+  position: relative;
+}
+.glitch-text:hover::before,
+.glitch-text:hover::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+.glitch-text:hover::before {
+  color: var(--cyan);
+  animation: glitchClip1 0.4s steps(2) infinite;
+  clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
+  transform: translate(-2px, 0);
+}
+.glitch-text:hover::after {
+  color: var(--magenta);
+  animation: glitchClip2 0.4s steps(2) infinite;
+  clip-path: polygon(0 55%, 100% 55%, 100% 70%, 0 70%);
+  transform: translate(2px, 0);
+}
+@keyframes glitchClip1 {
+  0%  { clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%); transform: translate(-3px,0); }
+  50% { clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%); transform: translate(3px,0); }
+}
+@keyframes glitchClip2 {
+  0%  { clip-path: polygon(0 50%, 100% 50%, 100% 70%, 0 70%); transform: translate(2px,0); }
+  50% { clip-path: polygon(0 10%, 100% 10%, 100% 30%, 0 30%); transform: translate(-2px,0); }
+}
+
+/* ── Flicker on load ── */
+@keyframes flickerIn {
+  0%  { opacity:0; }
+  10% { opacity:0.8; }
+  12% { opacity:0; }
+  20% { opacity:1; }
+  22% { opacity:0.4; }
+  30% { opacity:1; }
+  100%{ opacity:1; }
+}
+.flicker { animation: flickerIn 1.2s ease-out forwards; }

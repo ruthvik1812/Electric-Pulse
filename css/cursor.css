@@ -1,0 +1,63 @@
+/* ═══════════════════════════════════════
+   CUSTOM CURSOR — CIRCULAR RETICLE
+═══════════════════════════════════════ */
+#cursor-outer {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 2px solid var(--cyan);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: width .2s, height .2s, border-color .2s, background .2s;
+  box-shadow: 0 0 10px var(--cyan), inset 0 0 6px rgba(0,242,255,0.1);
+  mix-blend-mode: normal;
+}
+#cursor-inner {
+  position: fixed;
+  width: 6px; height: 6px;
+  background: var(--cyan);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px var(--cyan);
+  transition: width .1s, height .1s, background .2s;
+}
+
+/* Cross-hair lines */
+#cursor-outer::before,
+#cursor-outer::after {
+  content: '';
+  position: absolute;
+  background: var(--cyan);
+  opacity: 0.6;
+  transition: opacity .2s;
+}
+#cursor-outer::before { top:50%; left:-8px; width:6px; height:1px; transform: translateY(-50%); }
+#cursor-outer::after  { top:-8px; left:50%; width:1px; height:6px; transform: translateX(-50%); }
+
+/* ── Lock-on state (hovering interactive element) ── */
+#cursor-outer.locked {
+  width: 50px; height: 50px;
+  border-color: var(--green);
+  box-shadow: 0 0 14px var(--green), inset 0 0 8px rgba(188,255,0,0.12);
+  animation: cursorSpin 1.2s linear infinite;
+  border-style: dashed;
+}
+#cursor-inner.locked {
+  background: var(--green);
+  box-shadow: 0 0 10px var(--green);
+  width: 8px; height: 8px;
+}
+
+/* ── Click pulse ── */
+#cursor-outer.click-pulse {
+  animation: clickPulse 0.3s ease-out;
+}
+@keyframes cursorSpin { from{transform:translate(-50%,-50%) rotate(0deg)} to{transform:translate(-50%,-50%) rotate(360deg)} }
+@keyframes clickPulse {
+  0%   { transform:translate(-50%,-50%) scale(1);   opacity:1; }
+  50%  { transform:translate(-50%,-50%) scale(1.6); opacity:0.5; }
+  100% { transform:translate(-50%,-50%) scale(1);   opacity:1; }
+}

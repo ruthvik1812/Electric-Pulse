@@ -1,0 +1,116 @@
+/* ═══════════════════════════════════════
+   VOLTAGE GAUGE SIDEBAR (right edge)
+═══════════════════════════════════════ */
+#voltage-sidebar {
+  position: fixed;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+}
+
+#voltage-label-top,
+#voltage-label-bot {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--cyan);
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+#voltage-track {
+  width: 8px;
+  height: 240px;
+  background: rgba(0,242,255,0.06);
+  border: 1px solid rgba(0,242,255,0.2);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+#voltage-fill {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 0%;
+  background: linear-gradient(to top, var(--green) 0%, var(--cyan) 60%, #fff 100%);
+  border-radius: 4px;
+  transition: height 0.1s ease;
+  box-shadow: 0 0 8px var(--cyan), 0 0 20px var(--cyan-glow);
+}
+
+/* Tick marks */
+#voltage-track::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 22px,
+    rgba(0,242,255,0.25) 22px,
+    rgba(0,242,255,0.25) 23px
+  );
+  pointer-events: none;
+}
+
+#voltage-percent {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--cyan);
+  letter-spacing: 0.05em;
+  min-width: 32px;
+  text-align: center;
+  text-shadow: 0 0 6px var(--cyan);
+}
+
+/* ── Section indicator dots ── */
+#section-dots {
+  position: fixed;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  pointer-events: auto;
+}
+
+.s-dot {
+  width: 8px; height: 8px;
+  border: 1px solid rgba(0,242,255,0.4);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+}
+.s-dot.active {
+  background: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan);
+  border-color: var(--cyan);
+}
+.s-dot:hover { background: rgba(0,242,255,0.3); }
+
+.s-dot .dot-label {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--cyan);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.s-dot:hover .dot-label,
+.s-dot.active .dot-label { opacity: 0.8; }

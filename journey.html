@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Silicon — A Human Story</title>
+  <meta name="description" content="An interactive journey through the history and future of computing — from sand to quantum bits."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="journey.css"/>
+</head>
+<body>
+
+<!-- ── LOADER ── -->
+<div id="loader" aria-hidden="true">
+  <div class="loader-inner">
+    <svg id="loader-circuit" viewBox="0 0 160 160" fill="none">
+      <path class="lc-path" d="M80 8 L80 40"/>
+      <path class="lc-path" d="M80 40 L120 40"/>
+      <path class="lc-path" d="M120 40 L120 80"/>
+      <path class="lc-path" d="M80 40 L40  40"/>
+      <path class="lc-path" d="M40  40 L40  80"/>
+      <path class="lc-path" d="M40  80 L80 80"/>
+      <path class="lc-path" d="M120 80 L80 80"/>
+      <path class="lc-path" d="M80 80 L80 120"/>
+      <path class="lc-path" d="M80 120 L40 120"/>
+      <path class="lc-path" d="M80 120 L120 120"/>
+      <path class="lc-path" d="M40 120 L40 152"/>
+      <path class="lc-path" d="M120 120 L120 152"/>
+      <circle class="lc-node" cx="80"  cy="40"  r="4"/>
+      <circle class="lc-node" cx="40"  cy="40"  r="4"/>
+      <circle class="lc-node" cx="120" cy="40"  r="4"/>
+      <circle class="lc-node" cx="40"  cy="80"  r="4"/>
+      <circle class="lc-node" cx="80"  cy="80"  r="4"/>
+      <circle class="lc-node" cx="120" cy="80"  r="4"/>
+      <circle class="lc-node" cx="80"  cy="120" r="4"/>
+      <circle class="lc-node" cx="40"  cy="120" r="4"/>
+      <circle class="lc-node" cx="120" cy="120" r="4"/>
+      <rect class="lc-chip" x="58" y="58" width="44" height="44" rx="6"/>
+    </svg>
+    <p class="loader-title">SILICON</p>
+    <p class="loader-sub">A Human Story</p>
+    <div class="loader-bar"><div class="loader-fill" id="loader-fill"></div></div>
+  </div>
+</div>
+
+<!-- ── SCROLL PROGRESS ── -->
+<div id="scroll-bar" aria-hidden="true"></div>
+
+<!-- ── CHAPTER NAV ── -->
+<nav id="chapter-nav" aria-label="Chapter navigation">
+  <a class="nav-logo" href="#genesis" aria-label="Silicon home">⬡ SILICON</a>
+  <div class="nav-center">
+    <div class="nav-dots" role="list" id="nav-dots">
+      <button class="nav-dot active" data-target="genesis"   aria-label="Ch 1: Genesis">    <span class="dot-label">Genesis</span></button>
+      <button class="nav-dot"        data-target="spark"     aria-label="Ch 2: The Spark"> <span class="dot-label">The Spark</span></button>
+      <button class="nav-dot"        data-target="exp"       aria-label="Ch 3: Exponential"><span class="dot-label">Exponential</span></button>
+      <button class="nav-dot"        data-target="connected"  aria-label="Ch 4: Connected"> <span class="dot-label">Connected</span></button>
+      <button class="nav-dot"        data-target="ai"         aria-label="Ch 5: AI Rise">   <span class="dot-label">AI Rise</span></button>
+      <button class="nav-dot"        data-target="quantum"   aria-label="Ch 6: Quantum">   <span class="dot-label">Quantum</span></button>
+    </div>
+  </div>
+  <div class="nav-actions">
+    <div class="chapter-badge" id="chapter-badge" aria-live="polite">01 / 06</div>
+    <button class="nav-icon-btn" id="theme-toggle" aria-label="Toggle theme" title="Toggle dark/light mode">
+      <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" fill="currentColor"/></svg>
+    </button>
+    <button class="nav-icon-btn" id="fullscreen-btn" aria-label="Toggle fullscreen" title="Fullscreen">
+      <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+    <button class="nav-mobile-toggle" id="mobile-nav-toggle" aria-label="Toggle chapter menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<!-- Mobile nav overlay -->
+<div id="mobile-nav-overlay" aria-hidden="true">
+  <div class="mno-inner">
+    <p class="mno-title">Chapters</p>
+    <button class="mno-item" data-target="genesis">  <span class="mno-num">01</span> Genesis</button>
+    <button class="mno-item" data-target="spark">    <span class="mno-num">02</span> The Spark</button>
+    <button class="mno-item" data-target="exp">      <span class="mno-num">03</span> Exponential</button>
+    <button class="mno-item" data-target="connected"><span class="mno-num">04</span> Connected</button>
+    <button class="mno-item" data-target="ai">       <span class="mno-num">05</span> AI Rise</button>
+    <button class="mno-item" data-target="quantum">  <span class="mno-num">06</span> Quantum</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     CHAPTER 1 — GENESIS
+══════════════════════════════════════════ -->
+<section id="genesis" class="chapter ch-genesis">
+  <canvas id="star-canvas" aria-hidden="true"></canvas>
+  <!-- Parallax atoms -->
+  <div class="plx-layer" data-speed="0.15" aria-hidden="true">
+    <div class="atom a1"></div><div class="atom a2"></div><div class="atom a3"></div>
+  </div>
+  <div class="plx-layer" data-speed="0.35" aria-hidden="true">
+    <div class="atom a4"></div><div class="atom a5"></div>
+  </div>
+  <div class="ch-inner">
+    <p  class="ch-number"  data-reveal>Chapter One</p>
+    <h1 class="ch-title"   data-reveal>
+      <em>In the beginning,</em><br/>
+      there was<br/>
+      <span class="accent-text">darkness.</span>
+    </h1>
+    <p class="ch-lead" data-reveal>
+      Long before your phone. Long before the internet.<br/>
+      Long before the computer — there was only <em>sand.</em>
+    </p>
+    <!-- Animated sand grain visual -->
+    <div class="sand-visual" data-reveal aria-hidden="true">
+      <div class="sand-grain sg1"></div>
+      <div class="sand-grain sg2"></div>
+      <div class="sand-grain sg3"></div>
+      <div class="sand-grain sg4"></div>
+      <div class="sand-grain sg5"></div>
+      <div class="sand-grain sg6"></div>
+      <div class="sand-arrow">↓</div>
+      <div class="sand-label">SiO₂ — Silicon dioxide (quartz sand)</div>
+    </div>
+    <div class="scroll-hint" data-reveal>
+      <span>Scroll to begin the journey</span>
+      <div class="scroll-arrow">↓</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     CHAPTER 2 — THE SPARK
+══════════════════════════════════════════ -->
+<section id="spark" class="chapter ch-spark">
+  <div class="sticky-wrap">
+    <!-- Sticky left: narrative text -->
+    <div class="sticky-text">
+      <p class="ch-number" data-reveal>Chapter Two</p>
+      <h2 class="ch-title" data-reveal>The Spark</h2>
+      <div class="narrative" id="narrative-steps">
+        <div class="n-step active" data-step="0">
+          <p><strong>December 23, 1947. Murray Hill, New Jersey.</strong></p>
+          <p class="n-detail">Three physicists at Bell Laboratories — Shockley, Bardeen, and Brattain — switch on a device the size of a human palm. The world will never be the same.</p>
+        </div>
+        <div class="n-step" data-step="1">
+          <p>They called it the <em>transistor.</em></p>
+          <p class="n-detail">A semiconductor switch that could amplify electrical signals. Tiny. Reliable. It replaced the fragile vacuum tube and made modern computing possible.</p>
+        </div>
+        <div class="n-step" data-step="2">
+          <p>One transistor → millions → <em>billions.</em></p>
+          <p class="n-detail">A single Apple M3 chip packs <strong>25 billion transistors</strong> — each smaller than a virus — into a postage stamp of silicon.</p>
+        </div>
+      </div>
+    </div>
+    <!-- Sticky right: animated SVG diagram -->
+    <div class="sticky-visual">
+      <svg id="transistor-svg" viewBox="0 0 360 300" fill="none" aria-label="MOSFET transistor diagram">
+        <rect class="t-base" x="40" y="190" width="280" height="55" rx="8"/>
+        <text class="t-lbl small" x="180" y="222" text-anchor="middle">Silicon Substrate (P-type)</text>
+        <rect class="t-ndiff s-src" x="65"  y="150" width="75" height="50" rx="6"/>
+        <text class="t-lbl"   x="102" y="181" text-anchor="middle">N+</text>
+        <text class="t-lbl small" x="102" y="212" text-anchor="middle">Source</text>
+        <rect class="t-ndiff s-drn" x="220" y="150" width="75" height="50" rx="6"/>
+        <text class="t-lbl"   x="257" y="181" text-anchor="middle">N+</text>
+        <text class="t-lbl small" x="257" y="212" text-anchor="middle">Drain</text>
+        <rect class="t-oxide"  x="140" y="143" width="80" height="11" rx="3"/>
+        <rect class="t-gate"   x="128" y="112" width="104" height="36" rx="5"/>
+        <text class="t-lbl" x="180" y="135" text-anchor="middle">Gate</text>
+        <line class="t-lead" x1="102" y1="150" x2="102" y2="88"/>
+        <line class="t-lead" x1="257" y1="150" x2="257" y2="88"/>
+        <line class="t-lead" x1="180" y1="112" x2="180" y2="72"/>
+        <circle class="t-term" cx="102" cy="80" r="11"/>
+        <text class="t-lbl" x="102" y="63" text-anchor="middle">S</text>
+        <circle class="t-term" cx="257" cy="80" r="11"/>
+        <text class="t-lbl" x="257" y="63" text-anchor="middle">D</text>
+        <circle class="t-term" cx="180" cy="64" r="11"/>
+        <text class="t-lbl" x="180" y="47" text-anchor="middle">G</text>
+        <path class="t-current" id="current-flow" d="M102 80 Q180 30 257 80" stroke-dasharray="6 4"/>
+        <!-- Electron dots (JS will animate) -->
+        <circle class="t-electron" id="e1" cx="130" cy="58" r="4"/>
+        <circle class="t-electron" id="e2" cx="180" cy="42" r="4"/>
+        <circle class="t-electron" id="e3" cx="230" cy="58" r="4"/>
+      </svg>
+      <!-- Size comparison bars (show on step 2) -->
+      <div class="size-bars" id="size-bars">
+        <div class="sz-col"><div class="sz-bar" style="--bh:160px;--bc:#F97316"></div><span>1947<br/>1cm</span></div>
+        <div class="sz-col"><div class="sz-bar" style="--bh:80px;--bc:#A78BFA"></div><span>1971<br/>10µm</span></div>
+        <div class="sz-col"><div class="sz-bar" style="--bh:28px;--bc:#34D399"></div><span>2000<br/>130nm</span></div>
+        <div class="sz-col"><div class="sz-bar" style="--bh:6px;--bc:#00F2FF"></div><span>2023<br/>3nm</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     CHAPTER 3 — EXPONENTIAL
+══════════════════════════════════════════ -->
+<section id="exp" class="chapter ch-exp">
+  <div class="ch-inner">
+    <p class="ch-number" data-reveal>Chapter Three</p>
+    <h2 class="ch-title" data-reveal>Exponential<br/><span class="accent-text">Dreams</span></h2>
+    <p class="ch-lead" data-reveal>
+      In 1965, Gordon Moore observed that transistors on a chip double every two years.<br/>
+      The universe agreed — for 60 years straight.
+    </p>
+
+    <!-- Interactive timeline -->
+    <div class="timeline" data-reveal>
+      <div class="tl-rail"></div>
+      <div class="tl-items">
+        <div class="tl-item" tabindex="0" data-year="1971" data-chip="Intel 4004"    data-trans="2,300"          data-nm="10,000nm">
+          <div class="tl-dot"></div>
+          <div class="tl-card"><strong>1971</strong><br/>Intel 4004<br/><em>2,300 transistors</em></div>
+          <div class="tl-tooltip">The first commercial microprocessor. 10,000nm. Ran at 740kHz — slower than a 1970s calculator.</div>
+        </div>
+        <div class="tl-item" tabindex="0" data-year="1985" data-chip="Intel 386"     data-trans="275,000"        data-nm="1,500nm">
+          <div class="tl-dot"></div>
+          <div class="tl-card"><strong>1985</strong><br/>Intel 386<br/><em>275,000 transistors</em></div>
+          <div class="tl-tooltip">Powered the PC revolution. 1,500nm. Ran at 16–40MHz. Changed how humanity worked.</div>
+        </div>
+        <div class="tl-item" tabindex="0" data-year="2000" data-chip="Pentium 4"     data-trans="42,000,000"     data-nm="180nm">
+          <div class="tl-dot"></div>
+          <div class="tl-card"><strong>2000</strong><br/>Pentium 4<br/><em>42M transistors</em></div>
+          <div class="tl-tooltip">The internet age. 180nm. A billion humans came online. The world was never the same.</div>
+        </div>
+        <div class="tl-item" tabindex="0" data-year="2012" data-chip="Apple A6"      data-trans="1,400,000,000"  data-nm="32nm">
+          <div class="tl-dot"></div>
+          <div class="tl-card"><strong>2012</strong><br/>Apple A6<br/><em>1.4B transistors</em></div>
+          <div class="tl-tooltip">32nm. More power than the Apollo program. In your pocket. The smartphone changed everything.</div>
+        </div>
+        <div class="tl-item active" tabindex="0" data-year="2023" data-chip="Apple M3" data-trans="25,000,000,000" data-nm="3nm">
+          <div class="tl-dot"></div>
+          <div class="tl-card"><strong>2023</strong><br/>Apple M3<br/><em>25B transistors</em></div>
+          <div class="tl-tooltip">3nm — smaller than a COVID-19 virus. 25 billion switches in a stamp of silicon. Science fiction, made real.</div>
+        </div>
+      </div>
+    </div>
+
+      <!-- Stat counters -->
+      <div class="stats-row" data-reveal>
+        <div class="stat-block">
+          <span class="stat-num" data-count="25000000000" data-format="compact">0</span>
+          <span class="stat-desc">Transistors in one M3 chip</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-num" data-count="60" data-suffix=" years">0</span>
+          <span class="stat-desc">Moore's Law held true</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-num" data-count="3" data-suffix="nm">0</span>
+          <span class="stat-desc">Smallest process node, 2023</span>
+        </div>
+      </div>
+
+      <!-- Interactive Moore's Law bar chart -->
+      <div class="moores-chart" data-reveal>
+        <p class="mc-label">Transistor count — hover a bar to explore</p>
+        <div class="mc-bars">
+          <div class="mc-bar" data-year="1971" data-val="2,300" style="--mh:6px;  --mc:#F97316" tabindex="0"><span class="mc-yr">1971</span></div>
+          <div class="mc-bar" data-year="1985" data-val="275K"  style="--mh:18px; --mc:#FBBF24" tabindex="0"><span class="mc-yr">1985</span></div>
+          <div class="mc-bar" data-year="2000" data-val="42M"   style="--mh:46px; --mc:#34D399" tabindex="0"><span class="mc-yr">2000</span></div>
+          <div class="mc-bar" data-year="2012" data-val="1.4B"  style="--mh:100px;--mc:#A78BFA" tabindex="0"><span class="mc-yr">2012</span></div>
+          <div class="mc-bar" data-year="2023" data-val="25B"   style="--mh:180px;--mc:#00F2FF" tabindex="0"><span class="mc-yr">2023</span></div>
+        </div>
+        <div class="mc-tooltip" id="mc-tooltip"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     CHAPTER 4 — CONNECTED
+══════════════════════════════════════════ -->
+<section id="connected" class="chapter ch-connected">
+  <div class="ch-inner">
+    <p class="ch-number" data-reveal>Chapter Four</p>
+    <h2 class="ch-title" data-reveal>The<br/><span class="accent-text">Connected</span><br/>World</h2>
+    <p class="ch-lead" data-reveal>
+      Silicon no longer just computes — it connects. Every heartbeat, transaction,
+      and thought flows through a global nervous system of sand and light.
+    </p>
+    <canvas id="globe-canvas" aria-label="Global connection network visualization" data-reveal></canvas>
+
+    <!-- Flip cards — hover to reveal -->
+    <div class="impact-grid" data-reveal>
+      <div class="flip-card" aria-label="Healthcare impact">
+        <div class="flip-inner">
+          <div class="flip-front" style="--ac:#00F2FF">
+            <span class="fi-icon">🏥</span>
+            <span class="fi-title">Healthcare</span>
+          </div>
+          <div class="flip-back" style="--ac:#00F2FF">
+            <p>AI diagnostics detect cancer with <strong>94.5% accuracy</strong> — surpassing human doctors in some studies.</p>
+          </div>
+        </div>
+      </div>
+      <div class="flip-card" aria-label="Climate impact">
+        <div class="flip-inner">
+          <div class="flip-front" style="--ac:#34D399">
+            <span class="fi-icon">🌍</span>
+            <span class="fi-title">Climate</span>
+          </div>
+          <div class="flip-back" style="--ac:#34D399">
+            <p>Exascale supercomputers now predict weather <strong>2 weeks ahead</strong> with 99% accuracy.</p>
+          </div>
+        </div>
+      </div>
+      <div class="flip-card" aria-label="Education impact">
+        <div class="flip-inner">
+          <div class="flip-front" style="--ac:#A78BFA">
+            <span class="fi-icon">🎓</span>
+            <span class="fi-title">Education</span>
+          </div>
+          <div class="flip-back" style="--ac:#A78BFA">
+            <p><strong>300 million students</strong> worldwide have AI tutors that adapt in real-time to their needs.</p>
+          </div>
+        </div>
+      </div>
+      <div class="flip-card" aria-label="Space impact">
+        <div class="flip-inner">
+          <div class="flip-front" style="--ac:#F472B6">
+            <span class="fi-icon">🚀</span>
+            <span class="fi-title">Space</span>
+          </div>
+          <div class="flip-back" style="--ac:#F472B6">
+            <p>The Webb Telescope's silicon processors let us see light from <strong>13.6 billion years ago</strong>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     CHAPTER 5 — THE AI REVOLUTION
+══════════════════════════════════════════ -->
+<section id="ai" class="chapter ch-ai">
+  <div class="ch-inner">
+    <p class="ch-number" data-reveal>Chapter Five</p>
+    <h2 class="ch-title" data-reveal>The<br/><span class="accent-text">AI</span><br/>Revolution</h2>
+    <p class="ch-lead" data-reveal>
+      Silicon taught itself to think. Neural networks — modelled on the human brain —
+      now write poetry, diagnose disease, drive cars, and compose symphonies.
+    </p>
+
+    <!-- Interactive AI Model Slider -->
+    <div class="ai-slider-section" data-reveal>
+      <p class="ai-slider-label">Drag to explore AI model scale (parameters)</p>
+      <div class="ai-slider-wrap">
+        <input type="range" id="ai-slider" class="ai-range" min="0" max="4" step="1" value="0" aria-label="AI model scale slider"/>
+        <div class="ai-slider-track">
+          <div class="ai-slider-fill" id="ai-fill"></div>
+        </div>
+      </div>
+      <div class="ai-cards">
+        <div class="ai-card" data-idx="0">
+          <div class="aic-icon">🧠</div>
+          <div class="aic-name">GPT-1</div>
+          <div class="aic-year">2018</div>
+          <div class="aic-params">117M params</div>
+          <div class="aic-desc">First large language model. Proved that transformers could write coherent text.</div>
+        </div>
+        <div class="ai-card" data-idx="1">
+          <div class="aic-icon">🤖</div>
+          <div class="aic-name">GPT-3</div>
+          <div class="aic-year">2020</div>
+          <div class="aic-params">175B params</div>
+          <div class="aic-desc">Wrote essays, code, and poetry. The world realised AI had crossed a threshold.</div>
+        </div>
+        <div class="ai-card" data-idx="2">
+          <div class="aic-icon">🎨</div>
+          <div class="aic-name">DALL-E 3</div>
+          <div class="aic-year">2023</div>
+          <div class="aic-params">~12B params</div>
+          <div class="aic-desc">Creates photorealistic images from text descriptions. Creativity, redefined.</div>
+        </div>
+        <div class="ai-card" data-idx="3">
+          <div class="aic-icon">💬</div>
+          <div class="aic-name">GPT-4</div>
+          <div class="aic-year">2023</div>
+          <div class="aic-params">~1.8T params</div>
+          <div class="aic-desc">Passed the Bar exam. Solved olympiad problems. Outperformed most humans in knowledge tasks.</div>
+        </div>
+        <div class="ai-card" data-idx="4">
+          <div class="aic-icon">✨</div>
+          <div class="aic-name">Gemini Ultra</div>
+          <div class="aic-year">2024</div>
+          <div class="aic-params">Multimodal</div>
+          <div class="aic-desc">Sees, hears, reads, reasons. The first model to surpass human experts on MMLU benchmarks.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI stat row with animated counters -->
+    <div class="stats-row" data-reveal>
+      <div class="stat-block">
+        <span class="stat-num" data-count="1800" data-suffix="T">0</span>
+        <span class="stat-desc">GPT-4 estimated parameters</span>
+      </div>
+      <div class="stat-block">
+        <span class="stat-num" data-count="100" data-suffix="M+">0</span>
+        <span class="stat-desc">ChatGPT users in 2 months</span>
+      </div>
+      <div class="stat-block">
+        <span class="stat-num" data-count="2030" data-suffix="">0</span>
+        <span class="stat-desc">Projected AGI milestone year</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     CHAPTER 6 — QUANTUM
+══════════════════════════════════════════ -->
+<section id="quantum" class="chapter ch-quantum">
+  <canvas id="quantum-canvas" aria-hidden="true"></canvas>
+  <div class="ch-inner">
+    <p class="ch-number" data-reveal>Chapter Six</p>
+    <h2 class="ch-title" data-reveal>The Quantum<br/><span class="accent-text">Horizon</span></h2>
+    <p class="ch-lead" data-reveal>
+      Classical silicon has limits. The next chapter is written in quantum bits —
+      particles that exist as <em>both 0 and 1 simultaneously,</em> until observed.
+    </p>
+
+    <!-- Interactive qubit -->
+    <div class="qubit-area" data-reveal>
+      <div class="qubit-wrap">
+        <div class="qubit" id="qubit" role="button" tabindex="0" aria-label="Click to observe the qubit">
+          <div class="q-ring r1"></div>
+          <div class="q-ring r2"></div>
+          <div class="q-ring r3"></div>
+          <div class="q-core"><span id="q-label">|ψ⟩</span></div>
+          <div class="q-orb orb-a"></div>
+          <div class="q-orb orb-b"></div>
+          <div class="q-orb orb-c"></div>
+        </div>
+        <p class="qubit-hint" id="qubit-hint">Superposition — click to observe</p>
+        <button class="observe-btn" id="observe-btn">Observe Qubit</button>
+      </div>
+      <div class="q-facts">
+        <div class="qf" data-reveal><span class="qf-n">1M×</span><span class="qf-d">Faster for certain computations</span></div>
+        <div class="qf" data-reveal><span class="qf-n">127</span><span class="qf-d">Qubits in IBM's Heron processor</span></div>
+        <div class="qf" data-reveal><span class="qf-n">2030</span><span class="qf-d">Estimated year of quantum advantage</span></div>
+      </div>
+    </div>
+
+    <!-- Conclusion -->
+    <div class="conclusion" data-reveal>
+      <blockquote>
+        <em>"The computer was born not to entertain you, but to help you work harder by automating the dull stuff."</em>
+        <cite>— Douglas Adams</cite>
+      </blockquote>
+      <p>From a grain of sand to 25 billion transistors. From vacuum tubes to quantum bits.
+      The story of silicon is the story of human curiosity — infinite, unstoppable, beautiful.</p>
+      <div class="cta-row">
+        <a href="#genesis" class="btn-primary" id="restart-btn">↺ Begin Again</a>
+        <a href="site.html" class="btn-secondary">Explore Next →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="journey.js"></script>
+</body>
+</html>
